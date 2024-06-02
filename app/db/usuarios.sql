@@ -25,10 +25,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `usuario`
+-- Estructura de tabla para la tabla `usuarios`
 --
 
-CREATE TABLE `usuario` (
+CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL,
   `usuario` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   `clave` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
@@ -36,10 +36,10 @@ CREATE TABLE `usuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Volcado de datos para la tabla `usuario`
+-- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuario` (`id`, `usuario`, `clave`, `fechaBaja`) VALUES
+INSERT INTO `usuarios` (`id`, `usuario`, `clave`, `fechaBaja`) VALUES
 (1, 'franco', 'Hsu23sDsjseWs', NULL),
 (2, 'pedro', 'dasdqsdw2sd23', NULL),
 (3, 'jorge', 'sda2s2f332f2', NULL);
@@ -49,9 +49,9 @@ INSERT INTO `usuario` (`id`, `usuario`, `clave`, `fechaBaja`) VALUES
 --
 
 --
--- Indices de la tabla `usuario`
+-- Indices de la tabla `usuarios`
 --
-ALTER TABLE `usuario`
+ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -59,9 +59,9 @@ ALTER TABLE `usuario`
 --
 
 --
--- AUTO_INCREMENT de la tabla `usuario`
+-- AUTO_INCREMENT de la tabla `usuarios`
 --
-ALTER TABLE `usuario`
+ALTER TABLE `usuarios`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
