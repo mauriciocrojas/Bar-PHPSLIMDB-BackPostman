@@ -19,7 +19,10 @@ require_once './controllers/UsuarioController.php';
 
 // Load ENV
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->safeLoad();
+//$dotenv->safeLoad();
+$dotenv->load();
+
+
 
 // Instantiate App
 $app = AppFactory::create();
@@ -34,17 +37,24 @@ $app->addErrorMiddleware(true, true, true);
 $app->addBodyParsingMiddleware();
 
 // Routes
-$app->group('/usuarios', function (RouteCollectorProxy $group) {
-    $group->get('[/]', \UsuarioController::class . ':TraerTodos');
-    $group->get('/{usuario}', \UsuarioController::class . ':TraerUno');
-    $group->post('[/]', \UsuarioController::class . ':CargarUno');
-  });
+// $app->group('/usuarios', function (RouteCollectorProxy $group) {
+//     $group->get('[/]', \UsuarioController::class . ':TraerTodos');
+//     $group->get('/{usuario}', \UsuarioController::class . ':TraerUno');
+//     $group->post('[/]', \UsuarioController::class . ':CargarUno');
+//   }); //No funciona
 
-$app->get('[/]', function (Request $request, Response $response) {    
-    $payload = json_encode(array("mensaje" => "Slim Framework 4 PHP"));
+  $app->get('[/]', \UsuarioController::class . ':TraerTodos'); //Sí funciona
+  $app->get('/{usuario}', \UsuarioController::class . ':TraerUno'); //No funciona
+  $app->post('[/]', \UsuarioController::class . ':CargarUno'); //Sí funciona
+
+
+// $app->get('[/]', function (Request $request, Response $response) {    
+//     $payload = json_encode(array("mensaje" => "Slim Framework 4 PHP"));
     
-    $response->getBody()->write($payload);
-    return $response->withHeader('Content-Type', 'application/json');
-});
+//     $response->getBody()->write($payload);
+//     return $response->withHeader('Content-Type', 'application/json');
+// });
+
 
 $app->run();
+
