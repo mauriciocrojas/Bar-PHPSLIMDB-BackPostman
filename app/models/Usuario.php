@@ -10,7 +10,6 @@ class Usuario
 
         public function crearUsuario()
     {
-        echo "Entre en crear usuario";
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO usuarios (nombre, tipo, estado) VALUES (:nombre, :tipo, :estado)");
         //$claveHash = password_hash($this->clave, PASSWORD_DEFAULT);
@@ -43,13 +42,12 @@ class Usuario
         return $consulta->fetchObject('Usuario');
     }
 
-    public static function modificarUsuario()
+    public static function modificarUsuario($id, $estado)
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDato->prepararConsulta("UPDATE usuarios SET usuario = :usuario, clave = :clave WHERE id = :id");
-        $consulta->bindValue(':usuario', $this->usuario, PDO::PARAM_STR);
-        $consulta->bindValue(':clave', $this->clave, PDO::PARAM_STR);
-        $consulta->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $consulta = $objAccesoDato->prepararConsulta("UPDATE usuarios SET estado = :estado WHERE id = :id");
+        $consulta->bindValue(':estado', $estado, PDO::PARAM_STR);
+        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
         $consulta->execute();
     }
 

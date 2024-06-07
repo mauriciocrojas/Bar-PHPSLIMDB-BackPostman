@@ -41,6 +41,7 @@ $app->group('/usuarios', function (RouteCollectorProxy $group) {
     $group->get('[/]', \UsuarioController::class . ':TraerTodos');
     $group->get('/{nombre}', \UsuarioController::class . ':TraerUno');
     $group->post('[/]', \UsuarioController::class . ':CargarUno');
+    $group->put('/modificarestado/{id}', \UsuarioController::class . ':ModificarUno');
   }); 
 
 
