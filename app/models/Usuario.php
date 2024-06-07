@@ -12,11 +12,9 @@ class Usuario
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO usuarios (nombre, tipo, estado) VALUES (:nombre, :tipo, :estado)");
-        //$claveHash = password_hash($this->clave, PASSWORD_DEFAULT);
         $consulta->bindValue(':nombre', $this->nombre, PDO::PARAM_STR);
         $consulta->bindValue(':tipo', $this->tipo, PDO::PARAM_STR);
         $consulta->bindValue(':estado', $this->estado, PDO::PARAM_STR);
-        //$consulta->bindValue(':clave', $claveHash);
         $consulta->execute();
 
         return $objAccesoDatos->obtenerUltimoId();

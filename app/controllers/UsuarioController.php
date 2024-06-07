@@ -12,14 +12,12 @@ class UsuarioController extends Usuario implements IApiUsable
         $nombre = $parametros['nombre'];
         $tipo = $parametros['tipo'];
         $estado = $parametros['estado'];
-        //$clave = $parametros['clave'];
 
         // Creamos el usuario
         $usr = new Usuario();
         $usr->nombre = $nombre;
         $usr->tipo = $tipo;
         $usr->estado = $estado;
-        //$usr->clave = $clave;
         $usr->crearUsuario();
 
         $payload = json_encode(array("mensaje" => "Usuario creado con exito"));
@@ -69,8 +67,6 @@ class UsuarioController extends Usuario implements IApiUsable
 
     public function BorrarUno($request, $response, $args)
     {
-        $parametros = $request->getParsedBody();
-
         $id = $args['id'];
         Usuario::borrarUsuario($id);
 
