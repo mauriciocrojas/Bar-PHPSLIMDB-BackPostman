@@ -42,6 +42,7 @@ $app->group('/usuarios', function (RouteCollectorProxy $group) {
     $group->get('/{nombre}', \UsuarioController::class . ':TraerUno');
     $group->post('[/]', \UsuarioController::class . ':CargarUno');
     $group->put('/modificarestado/{id}', \UsuarioController::class . ':ModificarUno');
+    $group->delete('/eliminarusuario/{id}', \UsuarioController::class . ':BorrarUno');
   }); 
 
 

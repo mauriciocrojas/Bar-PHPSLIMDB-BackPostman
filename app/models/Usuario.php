@@ -51,13 +51,13 @@ class Usuario
         $consulta->execute();
     }
 
-    public static function borrarUsuario($usuario)
+    public static function borrarUsuario($id)
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDato->prepararConsulta("UPDATE usuarios SET fechaBaja = :fechaBaja WHERE id = :id");
-        $fecha = new DateTime(date("d-m-Y"));
-        $consulta->bindValue(':id', $usuario, PDO::PARAM_INT);
-        $consulta->bindValue(':fechaBaja', date_format($fecha, 'Y-m-d H:i:s'));
+        $consulta = $objAccesoDato->prepararConsulta("UPDATE usuarios SET fechaBaja = :fechaBaja, estado = 'Baja' WHERE id = :id");
+        
+        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
+        $consulta->bindValue(':fechaBaja', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $consulta->execute();
     }
 }
