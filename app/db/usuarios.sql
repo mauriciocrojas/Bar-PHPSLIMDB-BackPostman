@@ -30,8 +30,9 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL,
-  `usuario` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
-  `clave` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `nombre` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `tipo` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `estado` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   `fechaBaja` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -39,10 +40,12 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `usuario`, `clave`, `fechaBaja`) VALUES
-(1, 'franco', 'Hsu23sDsjseWs', NULL),
-(2, 'pedro', 'dasdqsdw2sd23', NULL),
-(3, 'jorge', 'sda2s2f332f2', NULL);
+INSERT INTO `usuarios` (`id`, `nombre`, `tipo`, `estado`, `fechaBaja`) VALUES
+(1, 'FrancoPerez', 'Administrador', 'Activo', NULL),
+(2, 'PedroSanchez', 'Cocinero', 'Activo', NULL),
+(3, 'JorgeGomez', 'Bartender', 'Activo', NULL),
+(4, 'MiguelAngel', 'Mozo', 'Activo', NULL),
+(5, 'TadeoJerez', 'Cervecero', 'Activo', NULL);
 
 --
 -- Índices para tablas volcadas
@@ -62,7 +65,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

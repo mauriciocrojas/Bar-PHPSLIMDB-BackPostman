@@ -39,13 +39,10 @@ $app->addBodyParsingMiddleware();
 // Routes
 $app->group('/usuarios', function (RouteCollectorProxy $group) {
     $group->get('[/]', \UsuarioController::class . ':TraerTodos');
-    $group->get('/{usuario}', \UsuarioController::class . ':TraerUno');
+    $group->get('/{nombre}', \UsuarioController::class . ':TraerUno');
     $group->post('[/]', \UsuarioController::class . ':CargarUno');
-  }); //No funciona
+  }); 
 
-  // $app->get('[/]', \UsuarioController::class . ':TraerTodos'); //Sí funciona
-  // $app->get('/{usuario}', \UsuarioController::class . ':TraerUno'); //No funciona
-  // $app->post('[/]', \UsuarioController::class . ':CargarUno'); //Sí funciona
 
 
 $app->get('[/]', function (Request $request, Response $response) {    

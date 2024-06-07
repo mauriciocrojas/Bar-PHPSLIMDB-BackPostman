@@ -4,17 +4,22 @@ require_once './interfaces/IApiUsable.php';
 
 class UsuarioController extends Usuario implements IApiUsable
 {
-    public function CargarUno($request, $response, $args)
+
+        public function CargarUno($request, $response, $args)
     {
         $parametros = $request->getParsedBody();
 
-        $usuario = $parametros['usuario'];
-        $clave = $parametros['clave'];
+        $nombre = $parametros['nombre'];
+        $tipo = $parametros['tipo'];
+        $estado = $parametros['estado'];
+        //$clave = $parametros['clave'];
 
         // Creamos el usuario
         $usr = new Usuario();
-        $usr->usuario = $usuario;
-        $usr->clave = $clave;
+        $usr->nombre = $nombre;
+        $usr->tipo = $tipo;
+        $usr->estado = $estado;
+        //$usr->clave = $clave;
         $usr->crearUsuario();
 
         $payload = json_encode(array("mensaje" => "Usuario creado con exito"));
@@ -24,10 +29,11 @@ class UsuarioController extends Usuario implements IApiUsable
           ->withHeader('Content-Type', 'application/json');
     }
 
+
     public function TraerUno($request, $response, $args)
     {
         // Buscamos usuario por nombre
-        $usr = $args['usuario'];
+        $usr = $args['nombre'];
         $usuario = Usuario::obtenerUsuario($usr);
         $payload = json_encode($usuario);
 
