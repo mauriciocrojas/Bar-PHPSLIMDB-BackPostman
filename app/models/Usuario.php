@@ -8,7 +8,7 @@ class Usuario
     public $estado;
 
 
-        public function crearUsuario()
+    public function crearUsuario()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO usuarios (nombre, tipo, estado) VALUES (:nombre, :tipo, :estado)");
@@ -53,7 +53,7 @@ class Usuario
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDato->prepararConsulta("UPDATE usuarios SET fechaBaja = :fechaBaja, estado = 'Baja' WHERE id = :id");
-        
+
         $consulta->bindValue(':id', $id, PDO::PARAM_INT);
         $consulta->bindValue(':fechaBaja', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $consulta->execute();
