@@ -1,28 +1,25 @@
 <?php
-require_once './models/Producto.php';
+require_once './models/Mesa.php';
 require_once './interfaces/IApiUsable.php';
 
-class ProductoController extends Producto implements IApiUsable
+class MesaController extends Mesa implements IApiUsable
 {
 
   public function CargarUno($request, $response, $args)
   {
     $parametros = $request->getParsedBody();
 
-    $descripcion = $parametros['descripcion'];
-    $tipo = $parametros['tipo'];
-    $tiempopreparacion = $parametros['tiempopreparacion'];
-    $precio = $parametros['precio'];
+    $estado = $parametros['estado'];
+    $codigoidentificacion = $parametros['codigoidentificacion'];
 
     // Creamos el usuario
-    $producto = new Producto();
-    $producto->descripcion = $descripcion;
-    $producto->tipo = $tipo;
-    $producto->tiempopreparacion = $tiempopreparacion;
-    $producto->precio = $precio;
-    $producto->crearProducto();
+    $producto = new Mesa();
+    $producto->estado = $estado;
+    $producto->codigoidentificacion = $codigoidentificacion;
 
-    $payload = json_encode(array("mensaje" => "Producto creado con exito"));
+    $producto->crearMesa();
+
+    $payload = json_encode(array("mensaje" => "Mesa creada con exito"));
 
     $response->getBody()->write($payload);
     return $response
@@ -32,10 +29,10 @@ class ProductoController extends Producto implements IApiUsable
 
   public function TraerTodos($request, $response, $args)
   {
-    $lista = Producto::obtenerTodos();
-    $payload = json_encode(array("listaProductos" => $lista));
+    $lista = Mesa::obtenerTodos();
+    $payload = json_encode(array("listaMesas" => $lista));
 
-    echo "Entré al TraerTodos de Producto\n";
+    echo "Entré al TraerTodos de Mesas\n";
 
     $response->getBody()->write($payload);
     return $response
@@ -44,10 +41,10 @@ class ProductoController extends Producto implements IApiUsable
 
   public function TraerUno($request, $response, $args)
   {
-    // Buscamos usuario por nombre
-    $descripcionProducto = $args['descripcionProducto'];
-    $producto = Producto::obtenerProducto($descripcionProducto);
-    $payload = json_encode($producto);
+    // Buscamos mesa por su id
+    $idmesa = $args['id'];
+    $mesa = Mesa::obtenerMesa($idmesa);
+    $payload = json_encode($mesa);
 
     $response->getBody()->write($payload);
     return $response
@@ -60,9 +57,9 @@ class ProductoController extends Producto implements IApiUsable
 
     $id = $args['id'];
     $estado = $parametros['estado'];
-    Producto::modificarProducto($id, $estado);
+    Mesa::modificarMesa($id, $estado);
 
-    $payload = json_encode(array("mensaje" => "Estado del producto modificado con exito"));
+    $payload = json_encode(array("mensaje" => "Estado de la mesa modificado con exito"));
 
     $response->getBody()->write($payload);
     return $response
@@ -72,9 +69,9 @@ class ProductoController extends Producto implements IApiUsable
   public function BorrarUno($request, $response, $args)
   {
     $id = $args['id'];
-    Producto::borrarProducto($id);
+    Mesa::borrarMesa($id);
 
-    $payload = json_encode(array("mensaje" => "Producto borrado con exito"));
+    $payload = json_encode(array("mensaje" => "Mesa borrada con exito"));
 
     $response->getBody()->write($payload);
     return $response
