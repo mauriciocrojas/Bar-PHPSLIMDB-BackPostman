@@ -35,8 +35,6 @@ class ProductoController extends Producto implements IApiUsable
     $lista = Producto::obtenerTodos();
     $payload = json_encode(array("listaProductos" => $lista));
 
-    echo "Entré al TraerTodos de Producto\n";
-
     $response->getBody()->write($payload);
     return $response
       ->withHeader('Content-Type', 'application/json');
@@ -44,7 +42,7 @@ class ProductoController extends Producto implements IApiUsable
 
   public function TraerUno($request, $response, $args)
   {
-    // Buscamos usuario por nombre
+    // Buscamos producto por su descripcion
     $descripcionProducto = $args['descripcionProducto'];
     $producto = Producto::obtenerProducto($descripcionProducto);
     $payload = json_encode($producto);
