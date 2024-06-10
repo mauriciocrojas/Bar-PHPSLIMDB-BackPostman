@@ -40,7 +40,7 @@ class PedidoController extends Pedido implements IApiUsable
 
   public function TraerUno($request, $response, $args)
   {
-    // Buscamos usuario por nombre
+    // Buscamos pedido por su id
     $idpedido = $args['idpedido'];
     $pedido = Pedido::obtenerPedido($idpedido);
     $payload = json_encode($pedido);
