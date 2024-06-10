@@ -18,6 +18,7 @@ require_once './db/AccesoDatos.php';
 require_once './controllers/UsuarioController.php';
 require_once './controllers/ProductoController.php';
 require_once './controllers/MesaController.php';
+require_once './controllers/PedidoController.php';
 
 // Load ENV
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -63,6 +64,15 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
   $group->post('[/]', \MesaController::class . ':CargarUno');
   $group->put('/modificarestado/{id}', \MesaController::class . ':ModificarUno');
   $group->delete('/eliminarmesa/{id}', \MesaController::class . ':BorrarUno');
+});
+
+// Routes Pedido
+$app->group('/pedidos', function (RouteCollectorProxy $group) {
+  $group->get('[/]', \PedidoController::class . ':TraerTodos');
+  $group->get('/{idpedido}', \PedidoController::class . ':TraerUno');
+  $group->post('[/]', \PedidoController::class . ':CargarUno');
+  $group->put('/modificarestado/{id}', \PedidoController::class . ':ModificarUno');
+  $group->delete('/eliminarpedido/{id}', \PedidoController::class . ':BorrarUno');
 });
 
 
