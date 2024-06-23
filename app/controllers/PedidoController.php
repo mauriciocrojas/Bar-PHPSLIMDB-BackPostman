@@ -9,18 +9,53 @@ class PedidoController extends Pedido implements IApiUsable
   {
     $parametros = $request->getParsedBody();
 
-    $idmesa = $parametros['idmesa'];
-    //$idproducto = $parametros['idproducto'];
-    $nombrecliente = $parametros['nombrecliente'];
+    $parametrosOk = false;
+    $listaOk = false;
 
-    // Creamos el pedido
-    $pedido = new Pedido();
-    $pedido->idmesa = $idmesa;
-    //$pedido->idproducto = $idproducto;
-    $pedido->nombrecliente = $nombrecliente;
-    $pedido->crearPedido();
+    $productosJson = $parametros['productos'] ?? null;
+    $productos = json_decode($productosJson, true); // Convierto a array asociativo
 
-    $payload = json_encode(array("mensaje" => "Pedido creado con exito"));
+    if (isset($parametros['idmesa']) && isset($parametros['nombrecliente'])) {
+      $parametrosOk = true;
+    } else {
+      echo "Los parámetros del pedido no fueron seteados correctamente";
+    }
+
+    if (isset($productosJson)) {
+      foreach ($productos as $producto) {
+        if (isset($producto['idproducto']) && isset($producto['cantidad'])) {
+          $listaOk = true;
+        } else {
+          $listaOk = false;
+          echo "La lista de productos no fue seteada correctamente";
+          break;
+        }
+      }
+    } else {
+      echo "La lista de productos no fue seteada";
+      $listaOk = false;
+    }
+
+    if ($parametrosOk && $listaOk) {
+      $idmesa = $parametros['idmesa'];
+      $nombrecliente = $parametros['nombrecliente'];
+
+
+      // Creamos el pedido
+      $pedido = new Pedido();
+      $pedido->idmesa = $idmesa;
+      $pedido->nombrecliente = $nombrecliente;
+      $pedido->productos = $productos;
+      $pedido->crearPedido();
+
+      $payload = json_encode(array("mensaje" => "Pedido creado con exito"));
+
+      $response->getBody()->write($payload);
+      return $response
+        ->withHeader('Content-Type', 'application/json');
+    } else {
+      $payload = json_encode(array("mensaje" => "El pedido no fue creado"));
+    }
 
     $response->getBody()->write($payload);
     return $response
