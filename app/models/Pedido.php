@@ -2,13 +2,12 @@
 
 class Pedido
 {
-    public $idpedido;
-    public $idmesa;
-    //public $idproducto;
-    public $estado;
-    public $nombrecliente;
-    public $nombreimagen;
-    public $tiempoestimado;
+    protected $idpedido;
+    protected $idmesa;
+    protected $estado;
+    protected $nombrecliente;
+    protected $nombreimagen;
+    protected $tiempoestimado;
 
     protected $productos = [];
 
@@ -44,8 +43,10 @@ class Pedido
     public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido, pe.idmesa, pe.estado, pe.nombrecliente, pe.tiempoestimado, pp.idproducto, pp.cantidad FROM pedido pe inner join pedidoproducto pp 
-        on pe.idpedido = pp.idpedido");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido IdPedido, pe.idmesa Mesa, pe.nombrecliente Cliente, pe.estado EstadoPedido, 
+        pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto , pp.cantidad Cantidad FROM pedido pe 
+        inner join pedidoproducto pp on pe.idpedido = pp.idpedido
+        inner join producto pr on pp.idproducto = pr.idproducto");
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
@@ -54,8 +55,10 @@ class Pedido
     public static function obtenerPedido($id)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido, pe.idmesa, pe.estado, pe.nombrecliente, pe.tiempoestimado, pp.idproducto, pp.cantidad FROM pedido pe inner join pedidoproducto pp 
-        on pe.idpedido = pp.idpedido
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido IdPedido, pe.idmesa Mesa, pe.nombrecliente Cliente, pe.estado EstadoPedido, 
+        pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto , pp.cantidad Cantidad FROM pedido pe 
+        inner join pedidoproducto pp on pe.idpedido = pp.idpedido
+        inner join producto pr on pp.idproducto = pr.idproducto
         WHERE pp.idpedido = :idpedido");
         $consulta->bindValue(':idpedido', $id, PDO::PARAM_STR);
         $consulta->execute();
