@@ -4,7 +4,7 @@ class Pedido
 {
     public $idpedido;
     public $idmesa;
-    public $idproducto;
+    //public $idproducto;
     public $estado;
     public $nombrecliente;
     public $nombreimagen;
@@ -15,9 +15,9 @@ class Pedido
     public function crearPedido()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO pedido (idmesa, idproducto, nombrecliente) VALUES (:idmesa, :idproducto, :nombrecliente)");
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO pedido (idmesa, nombrecliente) VALUES (:idmesa, :nombrecliente)");
         $consulta->bindValue(':idmesa', $this->idmesa, PDO::PARAM_INT);
-        $consulta->bindValue(':idproducto', $this->idproducto, PDO::PARAM_INT);
+        //$consulta->bindValue(':idproducto', $this->idproducto, PDO::PARAM_INT);
         $consulta->bindValue(':nombrecliente', $this->nombrecliente, PDO::PARAM_STR);
         $consulta->execute();
 
@@ -28,7 +28,7 @@ class Pedido
     public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT idpedido, idmesa, idproducto, estado, nombrecliente, tiempoestimado FROM pedido");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT idpedido, idmesa, estado, nombrecliente, tiempoestimado FROM pedido");
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
@@ -37,7 +37,7 @@ class Pedido
     public static function obtenerPedido($id)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT idpedido, idmesa, idproducto, estado, nombrecliente, tiempoestimado FROM pedido WHERE idpedido = :idpedido");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT idpedido, idmesa, estado, nombrecliente, tiempoestimado FROM pedido WHERE idpedido = :idpedido");
         $consulta->bindValue(':idpedido', $id, PDO::PARAM_STR);
         $consulta->execute();
 
