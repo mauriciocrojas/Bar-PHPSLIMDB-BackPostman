@@ -3,9 +3,10 @@
 error_reporting(-1);
 ini_set('display_errors', 1);
 
-use Psr\Http\Message\ResponseInterface as Response;
+
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use Slim\Psr7\Response;
 use Slim\Factory\AppFactory;
 use Slim\Routing\RouteCollectorProxy;
 use Slim\Routing\RouteContext;
@@ -19,6 +20,7 @@ require_once './controllers/UsuarioController.php';
 require_once './controllers/ProductoController.php';
 require_once './controllers/MesaController.php';
 require_once './controllers/PedidoController.php';
+require_once './middlewares/AuthPedidoMW.php';
 
 // Load ENV
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -66,14 +68,35 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
   $group->delete('/eliminarmesa/{id}', \MesaController::class . ':BorrarUno');
 });
 
+
+// $validacionParams = function (Request $request, RequestHandler $handler) {
+
+//   $params = $request->getParsedBody();
+
+
+//   if (isset($params["idmesa"], $params["nombrecliente"])) {
+//     $response = $handler->handle($request);
+//   } else {
+//     $response = new Response();
+//     $response->getBody()->write(json_encode(array("error" => "MW: Los params del pedido no fueron seteados correctamente")));
+//   }
+//   return $response;
+// };
+
+// $app->post('/pedidos', \PedidoController::class . ':CargarUno')
+// ->add($validacionParams);
+
 // Routes Pedido
 $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->get('[/]', \PedidoController::class . ':TraerTodos');
   $group->get('/{idpedido}', \PedidoController::class . ':TraerUno');
-  $group->post('[/]', \PedidoController::class . ':CargarUno');
+  $group->post('[/]', \PedidoController::class . ':CargarUno')->add(new AuthPedidoMW());
   $group->put('/modificarestado/{id}', \PedidoController::class . ':ModificarUno');
   $group->delete('/eliminarpedido/{id}', \PedidoController::class . ':BorrarUno');
 });
+
+
+
 
 
 $app->get('[/]', function (Request $request, Response $response) {
