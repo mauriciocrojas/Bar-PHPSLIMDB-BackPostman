@@ -14,6 +14,7 @@ class Pedido
 
 
 
+
     public function crearPedido()
     {
 
@@ -38,7 +39,17 @@ class Pedido
     }
 
 
+    //Validar
+    public function GuardarImagenMesa()
+    {
+            //Insert a la base
+            $objAccesoDatos = AccesoDatos::obtenerInstancia();
+            $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedido SET nombreimagen = ':nombreimagen' WHERE idpedido = :idpedido");
+            $consulta->bindValue(':nombreimagen', $this->nombreimagen, PDO::PARAM_STR);
+            $consulta->execute();
 
+
+    }
 
     public static function obtenerTodos()
     {
@@ -83,4 +94,8 @@ class Pedido
         $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
         $consulta->execute();
     }
+
+
+
+
 }

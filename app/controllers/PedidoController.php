@@ -29,6 +29,44 @@ class PedidoController extends Pedido implements IApiUsable
   }
 
 
+  //Validar
+  public function CargarImagenMesa($request, $response, $args)
+  {
+    //$parametros = $request->getParsedBody();
+
+    $idpedido = $args['idpedido'];
+    $archivosCargados = $request->getUploadedFiles();
+    $imagenMesa = $archivosCargados['imagenmesa'];
+
+    // Obtengo el nombre temporal del archivo
+    $imagenMesaTmpName = $imagenMesa->getStream()->getMetadata('uri'); 
+
+    // Nuevo nombre archivo
+    $nuevoNombreImagen = date("d-m-Y") . ".jpg";
+
+    // Ruta a la que mandaremos el archivo
+    $rutaImagen = "../ImagenesMesas2024/" . "IdPedido" . $idpedido . "-" . $nuevoNombreImagen;
+
+    // Guardo el archivo
+    $imagenMesa->moveTo($rutaImagen);
+
+
+    var_dump($imagenMesaTmpName);
+    var_dump($imagenMesa->getClientFilename() . date("d-m-Y") . ".jpg");
+    var_dump($rutaImagen);
+
+
+
+
+    // Actualizamos el pedido
+    // Pedido::GuardarImagenMesa();
+
+    $payload = json_encode(array("mensaje" => "Imagen cargada con exito"));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
 
   public function TraerTodos($request, $response, $args)
   {

@@ -91,6 +91,7 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->get('[/]', \PedidoController::class . ':TraerTodos');
   $group->get('/{idpedido}', \PedidoController::class . ':TraerUno');
   $group->post('[/]', \PedidoController::class . ':CargarUno')->add(new AuthPedidoMW());
+  $group->post('/cargarimagenmesa/{idpedido}', \PedidoController::class . ':CargarImagenMesa');//Validar
   $group->put('/modificarestado/{id}', \PedidoController::class . ':ModificarUno');
   $group->delete('/eliminarpedido/{id}', \PedidoController::class . ':BorrarUno');
 });
