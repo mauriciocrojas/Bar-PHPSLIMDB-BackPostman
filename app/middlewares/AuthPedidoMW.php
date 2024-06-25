@@ -9,7 +9,7 @@ class AuthPedidoMW
 
 
 
-  public function __invoke(Request $request, RequestHandler $handler)
+  public function ValidarParamsPedido (Request $request, RequestHandler $handler)
   {
 
     $params = $request->getParsedBody();

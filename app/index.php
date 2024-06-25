@@ -90,7 +90,7 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
 $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->get('[/]', \PedidoController::class . ':TraerTodos');
   $group->get('/{idpedido}', \PedidoController::class . ':TraerUno');
-  $group->post('[/]', \PedidoController::class . ':CargarUno')->add(new AuthPedidoMW());
+  $group->post('[/]', \PedidoController::class . ':CargarUno')->add(\AuthPedidoMW::class . ':ValidarParamsPedido');
   $group->post('/cargarimagenmesa/{idpedido}', \PedidoController::class . ':CargarImagenMesa');//Validar
   $group->put('/modificarestado/{id}', \PedidoController::class . ':ModificarUno');
   $group->delete('/eliminarpedido/{id}', \PedidoController::class . ':BorrarUno');

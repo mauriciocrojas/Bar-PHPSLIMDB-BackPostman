@@ -6,12 +6,10 @@ class Pedido
     protected $idmesa;
     protected $estado;
     protected $nombrecliente;
-    protected $nombreimagen;
+    protected $ubicacionimagen;
     protected $tiempoestimado;
 
     protected $productos = [];
-
-
 
 
 
@@ -38,24 +36,21 @@ class Pedido
         return $objAccesoDatos->obtenerUltimoId();
     }
 
-
-    //Validar
-    public function GuardarImagenMesa()
+    public static function GuardarImagenMesa($ubicacionImagen, $idpedido)
     {
-            //Insert a la base
-            $objAccesoDatos = AccesoDatos::obtenerInstancia();
-            $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedido SET nombreimagen = ':nombreimagen' WHERE idpedido = :idpedido");
-            $consulta->bindValue(':nombreimagen', $this->nombreimagen, PDO::PARAM_STR);
-            $consulta->execute();
-
-
+        //Insert a la base
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedido SET ubicacionimagen = :ubicacionimagen WHERE idpedido = :idpedido");
+        $consulta->bindValue(':ubicacionimagen', $ubicacionImagen, PDO::PARAM_STR);
+        $consulta->bindValue(':idpedido', $idpedido, PDO::PARAM_INT);
+        $consulta->execute();
     }
 
     public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido IdPedido, pe.idmesa Mesa, pe.nombrecliente Cliente, pe.estado EstadoPedido, 
-        pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto , pp.cantidad Cantidad FROM pedido pe 
+        pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto , pp.cantidad Cantidad, pe.ubicacionimagen UbicacionImagen FROM pedido pe 
         inner join pedidoproducto pp on pe.idpedido = pp.idpedido
         inner join producto pr on pp.idproducto = pr.idproducto");
         $consulta->execute();
@@ -94,8 +89,4 @@ class Pedido
         $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
         $consulta->execute();
     }
-
-
-
-
 }
