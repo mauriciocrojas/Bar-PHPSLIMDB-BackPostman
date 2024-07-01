@@ -14,26 +14,21 @@ use Slim\Routing\RouteContext;
 require __DIR__ . '/../vendor/autoload.php';
 
 require_once './db/AccesoDatos.php';
-// require_once './middlewares/Logger.php';
 
 require_once './controllers/UsuarioController.php';
 require_once './controllers/ProductoController.php';
 require_once './controllers/MesaController.php';
 require_once './controllers/PedidoController.php';
 require_once './middlewares/AuthPedidoMW.php';
+require_once './models/Login.php';
 
 // Load ENV
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-//$dotenv->safeLoad();
 $dotenv->load();
-
 
 
 // Instantiate App
 $app = AppFactory::create();
-
-// Set base path
-//$app->setBasePath('/');//cuando uso el xampp
 
 // Add error middleware
 $app->addErrorMiddleware(true, true, true);
@@ -69,23 +64,6 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
 });
 
 
-// $validacionParams = function (Request $request, RequestHandler $handler) {
-
-//   $params = $request->getParsedBody();
-
-
-//   if (isset($params["idmesa"], $params["nombrecliente"])) {
-//     $response = $handler->handle($request);
-//   } else {
-//     $response = new Response();
-//     $response->getBody()->write(json_encode(array("error" => "MW: Los params del pedido no fueron seteados correctamente")));
-//   }
-//   return $response;
-// };
-
-// $app->post('/pedidos', \PedidoController::class . ':CargarUno')
-// ->add($validacionParams);
-
 // Routes Pedido
 $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->get('[/]', \PedidoController::class . ':TraerTodos');
@@ -96,7 +74,10 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->delete('/eliminarpedido/{id}', \PedidoController::class . ':BorrarUno');
 });
 
-
+// Routes Log
+$app->group('/log', function (RouteCollectorProxy $group) {
+  $group->post('[/]', \Login::class . ':ProcesoIngreso');
+});
 
 
 
