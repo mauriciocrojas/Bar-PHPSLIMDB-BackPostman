@@ -43,11 +43,12 @@ class Login
     }
 
 
-    public static function CrearToken(){
+    public static function CrearToken()
+    {
         $datos = "Lo devuelto por getParsedBody";
         $ahora = time();
 
-        $payload = array (
+        $payload = array(
             'iat' => $ahora,
             'data' => $datos,
             'app' => 'API REST 20240'
@@ -64,22 +65,22 @@ class Login
         return $newResponse->withHeader('Content-Type', 'application/json');
     }
 
-    public static function VerificarToken(){
-        $datos = "Lo devuelto por getParsedBody";//debería ser del header
+    public static function VerificarToken()
+    {
+        $datos = "Lo devuelto por getParsedBody"; //debería ser del header
         $token = $datos['token'];
 
         $retorno = new stdClass();
         $status = 200;
 
-        try{
+        try {
             //Decodifico el token recibido
-            JWT::decode (
-              $token,                   //JWT
-              'miClaveSecreta',         //Clave usada en la creación
-              ['HS256']                 //Algoritmo de codificación
+            JWT::decode(
+                $token,                   //JWT
+                'miClaveSecreta',         //Clave usada en la creación
+                ['HS256']                 //Algoritmo de codificación
             );
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             $retorno->mensaje = "Token no valido! ---> " - $e->getMessage();
             $status = 500;
         }
@@ -90,37 +91,5 @@ class Login
         $newResponse->getBody()->write(json_encode($retorno));
 
         return $newResponse->withHeader('Content-Type', 'application/json');
-    }
-
-    public function crearMesa()
-    {
-        $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO mesa (estado, codigoidentificacion) VALUES (:estado, :codigoidentificacion)");
-        // $consulta->bindValue(':estado', $this->estado, PDO::PARAM_STR);
-        // $consulta->bindValue(':codigoidentificacion', $this->codigoidentificacion, PDO::PARAM_STR);
-
-        $consulta->execute();
-
-        return $objAccesoDatos->obtenerUltimoId();
-    }
-
-
-    public static function obtenerTodos()
-    {
-        $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT idmesa, estado, codigoidentificacion FROM mesa");
-        $consulta->execute();
-
-        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Mesa');
-    }
-
-    public static function obtenerMesa($idmesa)
-    {
-        $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT idmesa, estado, codigoidentificacion FROM mesa WHERE idmesa = :idmesa");
-        $consulta->bindValue(':idmesa', $idmesa, PDO::PARAM_INT);
-        $consulta->execute();
-
-        return $consulta->fetchObject('Mesa');
     }
 }
