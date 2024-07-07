@@ -78,18 +78,17 @@ $app->group('/log', function (RouteCollectorProxy $group) {
   $group->post('[/]', \Login::class . ':ProcesoIngreso');
 });
 
-// Routes PedidoAccion
-// $app->group('/pedidoaccion', function (RouteCollectorProxy $group) {
-//   $group->get('[/]', \PedidoController::class . ':TraerTodosSolicitados');
-//   $group->get('[/tomarpedidomozo/{id}]', \PedidoController::class . ':AccionPedidoMozo');
-//   $group->post('/cargarimagenmesa/{idpedido}', \PedidoController::class . ':CargarImagenMesaMozo');
-// });
+
 
 // Routes PedidoAccion
 $app->group('/pedidoaccion', function (RouteCollectorProxy $group) {
-  $group->get('[/]', \PedidoController::class . ':TraerTodosSolicitados');
-  $group->get('/tomarpedidomozo/{id}', \PedidoController::class . ':AccionPedidoMozo');
+  $group->get('/pedidosmozo', \PedidoController::class . ':TraerTodosSolicitados');
+  $group->get('/tomarpedidomozo/{id}', \PedidoController::class . ':TomarPedidoMozoController');
   $group->post('/cargarimagenmesa/{idpedido}', \PedidoController::class . ':CargarImagenMesaMozo');
+  $group->get('/pedidoscocineros', \PedidoController::class . ':TraerTodosTomadosPorMozoYEnPreparacionComida');
+  $group->get('/pedidosbebida', \PedidoController::class . ':TraerTodosTomadosPorMozoYEnPreparacionBebida');
+  $group->get('/tomarpedidococinero/{id}', \PedidoController::class . ':TomarPedidoCocineroController');
+  $group->get('/tomarpedidoBartenderCervecero/{id}', \PedidoController::class . ':TomarPedidoBartenderCocineroController');
 });
 
 

@@ -74,6 +74,26 @@ class PedidoController extends Pedido implements IApiUsable
       ->withHeader('Content-Type', 'application/json');
   }
 
+  public function TraerTodosTomadosPorMozoYEnPreparacionComida($request, $response, $args)
+  {
+    $lista = Pedido::obtenerTodosTomadosPorMozoYEnPreparacionComida();
+    $payload = json_encode(array("listaPedidosTomadosPorMozoComida" => $lista));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+
+  public function TraerTodosTomadosPorMozoYEnPreparacionBebida($request, $response, $args)
+  {
+    $lista = Pedido::obtenerTodosTomadosPorMozoYEnPreparacionBebida();
+    $payload = json_encode(array("listaPedidosTomadosPorMozoBebida" => $lista));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+
   public function TraerUno($request, $response, $args)
   {
     // Buscamos pedido por su id
@@ -114,13 +134,39 @@ class PedidoController extends Pedido implements IApiUsable
   }
 
 
-  public function AccionPedidoMozo($request, $response, $args)
+  public function TomarPedidoMozoController($request, $response, $args)
   {
 
     $id = $args['id'];
     $codigoPedido = Pedido::TomarPedidoMozo($id);
 
-    $payload = json_encode(array("mensaje" => "Pedido tomado por el mozo, codigo pedido: $codigoPedido"));
+    $payload = json_encode(array("mensaje" => "Pedido tomado por el mozo y actualizado su estado, codigo pedido: $codigoPedido, pedido id: $id"));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+
+  public function TomarPedidoCocineroController($request, $response, $args)
+  {
+
+    $id = $args['id'];
+    Pedido::TomarPedidoCocinero($id);
+
+    $payload = json_encode(array("mensaje" => "Pedido tomado por el cocinero, actualizado su tiempo de preparacion y estado, pedido id: $id"));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+
+  public function TomarPedidoBartenderCocineroController($request, $response, $args)
+  {
+
+    $id = $args['id'];
+    Pedido::TomarPedidoCocinero($id);
+
+    $payload = json_encode(array("mensaje" => "Pedido tomado por el Bartender/Cervecero, actualizado su tiempo de preparacion y estado, pedido id: $id"));
 
     $response->getBody()->write($payload);
     return $response
