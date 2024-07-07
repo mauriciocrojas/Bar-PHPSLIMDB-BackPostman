@@ -133,9 +133,9 @@ class Pedido
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDato->prepararConsulta("UPDATE pedido SET estado = 'Tomado por mozo', codigopedido = :codigo WHERE idpedido = :idpedido");
-       
+
         $codigoPedido = Pedido::generarCodigoAlfanumerico();
-       
+
         $consulta->bindValue(':codigo', $codigoPedido, PDO::PARAM_STR);
         $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
         $consulta->execute();
@@ -147,17 +147,18 @@ class Pedido
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDato->prepararConsulta(
-        "UPDATE pedido SET estado = 'En preparacion', tiempoestimado = (SELECT MAX(pr.tiempopreparacion) 
+            "UPDATE pedido SET estado = 'En preparacion', tiempoestimado = (SELECT MAX(pr.tiempopreparacion) 
         FROM pedidoproducto pepr 
         INNER JOIN producto pr ON pepr.idproducto = pr.idproducto
         INNER JOIN pedido pe ON pe.idpedido = pepr.idpedido
         WHERE pr.tipo = 'Comida' AND pepr.idpedido = pe.idpedido
         AND pe.idpedido = :idpedidosub)
-        WHERE idpedido = :idpedidomain");
-    
-    $consulta->bindValue(':idpedidosub', $id, PDO::PARAM_INT);
-    $consulta->bindValue(':idpedidomain', $id, PDO::PARAM_INT);
-    $consulta->execute();
+        WHERE idpedido = :idpedidomain"
+        );
+
+        $consulta->bindValue(':idpedidosub', $id, PDO::PARAM_INT);
+        $consulta->bindValue(':idpedidomain', $id, PDO::PARAM_INT);
+        $consulta->execute();
     }
 
 
@@ -165,19 +166,22 @@ class Pedido
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDato->prepararConsulta(
-        "UPDATE pedido SET estado = 'En preparacion', tiempoestimado = (SELECT MAX(pr.tiempopreparacion) 
+            "UPDATE pedido SET estado = 'En preparacion', tiempoestimado = (SELECT MAX(pr.tiempopreparacion) 
         FROM pedidoproducto pepr 
         INNER JOIN producto pr ON pepr.idproducto = pr.idproducto
         INNER JOIN pedido pe ON pe.idpedido = pepr.idpedido
         WHERE pr.tipo = 'Bebida' AND pepr.idpedido = pe.idpedido
         AND pe.idpedido = :idpedidosub) 
-        WHERE idpedido = :idpedidomain AND tiempoestimado IS NULL");
-    
-    $consulta->bindValue(':idpedidosub', $id, PDO::PARAM_INT);
-    $consulta->bindValue(':idpedidomain', $id, PDO::PARAM_INT);        $consulta->execute();
+        WHERE idpedido = :idpedidomain AND tiempoestimado IS NULL"
+        );
+
+        $consulta->bindValue(':idpedidosub', $id, PDO::PARAM_INT);
+        $consulta->bindValue(':idpedidomain', $id, PDO::PARAM_INT);
+        $consulta->execute();
     }
 
-    public static function generarCodigoAlfanumerico() {
+    public static function generarCodigoAlfanumerico()
+    {
         $caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         return substr(str_shuffle($caracteres), 0, 5);
     }
