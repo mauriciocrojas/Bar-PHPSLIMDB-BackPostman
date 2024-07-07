@@ -29,7 +29,7 @@ class PedidoController extends Pedido implements IApiUsable
   }
 
 
-  public function CargarImagenMesa($request, $response, $args)
+  public function CargarImagenMesaMozo($request, $response, $args)
   {
     $idpedido = $args['idpedido'];
     $archivosCargados = $request->getUploadedFiles();
@@ -58,6 +58,16 @@ class PedidoController extends Pedido implements IApiUsable
   {
     $lista = Pedido::obtenerTodos();
     $payload = json_encode(array("listaPedidos" => $lista));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+
+  public function TraerTodosSolicitados($request, $response, $args)
+  {
+    $lista = Pedido::obtenerTodosSolicitados();
+    $payload = json_encode(array("listaPedidosSolicitados" => $lista));
 
     $response->getBody()->write($payload);
     return $response
@@ -97,6 +107,20 @@ class PedidoController extends Pedido implements IApiUsable
     Pedido::borrarPedido($id);
 
     $payload = json_encode(array("mensaje" => "Pedido borrado con exito"));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+
+
+  public function AccionPedidoMozo($request, $response, $args)
+  {
+
+    $id = $args['id'];
+    $codigoPedido = Pedido::TomarPedidoMozo($id);
+
+    $payload = json_encode(array("mensaje" => "Pedido tomado por el mozo, codigo pedido: $codigoPedido"));
 
     $response->getBody()->write($payload);
     return $response

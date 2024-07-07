@@ -69,7 +69,6 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
   $group->get('[/]', \PedidoController::class . ':TraerTodos');
   $group->get('/{idpedido}', \PedidoController::class . ':TraerUno');
   $group->post('[/]', \PedidoController::class . ':CargarUno')->add(\AuthPedidoMW::class . ':ValidarParamsPedido');
-  $group->post('/cargarimagenmesa/{idpedido}', \PedidoController::class . ':CargarImagenMesa');//Validar
   $group->put('/modificarestado/{id}', \PedidoController::class . ':ModificarUno');
   $group->delete('/eliminarpedido/{id}', \PedidoController::class . ':BorrarUno');
 });
@@ -79,6 +78,19 @@ $app->group('/log', function (RouteCollectorProxy $group) {
   $group->post('[/]', \Login::class . ':ProcesoIngreso');
 });
 
+// Routes PedidoAccion
+// $app->group('/pedidoaccion', function (RouteCollectorProxy $group) {
+//   $group->get('[/]', \PedidoController::class . ':TraerTodosSolicitados');
+//   $group->get('[/tomarpedidomozo/{id}]', \PedidoController::class . ':AccionPedidoMozo');
+//   $group->post('/cargarimagenmesa/{idpedido}', \PedidoController::class . ':CargarImagenMesaMozo');
+// });
+
+// Routes PedidoAccion
+$app->group('/pedidoaccion', function (RouteCollectorProxy $group) {
+  $group->get('[/]', \PedidoController::class . ':TraerTodosSolicitados');
+  $group->get('/tomarpedidomozo/{id}', \PedidoController::class . ':AccionPedidoMozo');
+  $group->post('/cargarimagenmesa/{idpedido}', \PedidoController::class . ':CargarImagenMesaMozo');
+});
 
 
 $app->get('[/]', function (Request $request, Response $response) {

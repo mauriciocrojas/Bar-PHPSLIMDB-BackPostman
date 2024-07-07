@@ -31,10 +31,12 @@ CREATE TABLE `pedido` (
   `idpedido` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `idmesa` int(11) NOT NULL,
   `idproducto` int(11) NOT NULL,
-  `estado` varchar(250) COLLATE utf8_unicode_ci DEFAULT 'En preparacion',
+  `estado` varchar(250) COLLATE utf8_unicode_ci DEFAULT 'Solicitado',
   `nombrecliente` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   `nombreimagen` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `tiempoestimado` int(11) DEFAULT NULL
+  `tiempoestimado` int(11) DEFAULT NULL,
+  `codigopedido` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
+
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 

@@ -8,6 +8,7 @@ class Pedido
     protected $nombrecliente;
     protected $ubicacionimagen;
     protected $tiempoestimado;
+    protected $codigopedido;
 
     protected $productos = [];
 
@@ -50,7 +51,7 @@ class Pedido
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido IdPedido, pe.idmesa Mesa, pe.nombrecliente Cliente, pe.estado EstadoPedido, 
-        pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto , pp.cantidad Cantidad, pe.ubicacionimagen UbicacionImagen FROM pedido pe 
+        pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto , pp.cantidad Cantidad, pe.ubicacionimagen UbicacionImagen, pe.codigopedido CodigoPedido FROM pedido pe 
         inner join pedidoproducto pp on pe.idpedido = pp.idpedido
         inner join producto pr on pp.idproducto = pr.idproducto");
         $consulta->execute();
@@ -58,11 +59,23 @@ class Pedido
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
     }
 
+    public static function obtenerTodosSolicitados()
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido IdPedido, pe.idmesa Mesa, pe.nombrecliente Cliente, pe.estado EstadoPedido, 
+        pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto , pp.cantidad Cantidad, pe.ubicacionimagen UbicacionImagen, pe.codigopedido CodigoPedido FROM pedido pe 
+        inner join pedidoproducto pp on pe.idpedido = pp.idpedido
+        inner join producto pr on pp.idproducto = pr.idproducto
+        WHERE pe.estado = 'Solicitado'");
+        $consulta->execute();
+
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
+    }
     public static function obtenerPedido($id)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido IdPedido, pe.idmesa Mesa, pe.nombrecliente Cliente, pe.estado EstadoPedido, 
-        pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto , pp.cantidad Cantidad FROM pedido pe 
+        pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto , pp.cantidad Cantidad, pe.codigopedido CodigoPedido FROM pedido pe 
         inner join pedidoproducto pp on pe.idpedido = pp.idpedido
         inner join producto pr on pp.idproducto = pr.idproducto
         WHERE pp.idpedido = :idpedido");
@@ -88,5 +101,24 @@ class Pedido
 
         $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
         $consulta->execute();
+    }
+
+    public static function TomarPedidoMozo($id)
+    {
+        $objAccesoDato = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDato->prepararConsulta("UPDATE pedido SET estado = 'Tomado por mozo', codigopedido = :codigo WHERE idpedido = :idpedido");
+       
+        $codigoPedido = Pedido::generarCodigoAlfanumerico();
+       
+        $consulta->bindValue(':codigo', $codigoPedido, PDO::PARAM_STR);
+        $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
+        $consulta->execute();
+
+        return $codigoPedido;
+    }
+
+    public static function generarCodigoAlfanumerico() {
+        $caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        return substr(str_shuffle($caracteres), 0, 5);
     }
 }
