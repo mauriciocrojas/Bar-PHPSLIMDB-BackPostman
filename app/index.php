@@ -89,6 +89,7 @@ $app->group('/pedidoaccion', function (RouteCollectorProxy $group) {
   $group->get('/pedidosbebida', \PedidoController::class . ':TraerTodosTomadosPorMozoYEnPreparacionBebida');
   $group->get('/tomarpedidococinero/{id}', \PedidoController::class . ':TomarPedidoCocineroController');
   $group->get('/tomarpedidoBartenderCervecero/{id}', \PedidoController::class . ':TomarPedidoBartenderCocineroController');
+  $group->post('/traerpedidocliente', \PedidoController::class . ':TraerPedidoCliente');
 });
 
 

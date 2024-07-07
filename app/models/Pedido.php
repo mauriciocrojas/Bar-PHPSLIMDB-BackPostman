@@ -185,4 +185,15 @@ class Pedido
         $caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         return substr(str_shuffle($caracteres), 0, 5);
     }
+
+    public static function obtenerPedidoCliente($numeropedido, $idmesa)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT tiempoestimado TiempoDePreparacion FROM pedido WHERE codigopedido = :codigopedido AND idmesa = :idmesa");
+        $consulta->bindValue(':codigopedido', $numeropedido, PDO::PARAM_STR);
+        $consulta->bindValue(':idmesa', $idmesa, PDO::PARAM_INT);
+        $consulta->execute();
+
+        return $consulta->fetch(PDO::FETCH_ASSOC);
+    }
 }

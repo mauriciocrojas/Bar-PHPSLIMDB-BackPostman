@@ -172,4 +172,26 @@ class PedidoController extends Pedido implements IApiUsable
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
+
+  public function TraerPedidoCliente($request, $response, $args)
+  {
+    $parametros = $request->getParsedBody();
+
+    $idmesa = $parametros['idmesa'];
+    $numeropedido = $parametros['codigopedido'];
+
+    $pedido = Pedido::obtenerPedidoCliente($numeropedido, $idmesa);
+
+    if ($pedido) {
+      $tiempoPreparacion = $pedido['TiempoDePreparacion'];
+      $mensaje = "El tiempo de demora de su pedido es de $tiempoPreparacion minutos";
+  } else {
+      $mensaje = "No se encontró el pedido con el código proporcionado y la mesa especificada.";
+  }
+
+  $payload = json_encode(["mensaje" => $mensaje]);
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
 }
