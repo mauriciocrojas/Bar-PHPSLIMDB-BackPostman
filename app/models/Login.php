@@ -43,53 +43,53 @@ class Login
     }
 
 
-    public static function CrearToken()
-    {
-        $datos = "Lo devuelto por getParsedBody";
-        $ahora = time();
+    // public static function CrearToken()
+    // {
+    //     $datos = "Lo devuelto por getParsedBody";
+    //     $ahora = time();
 
-        $payload = array(
-            'iat' => $ahora,
-            'data' => $datos,
-            'app' => 'API REST 20240'
-        );
+    //     $payload = array(
+    //         'iat' => $ahora,
+    //         'data' => $datos,
+    //         'app' => 'API REST 20240'
+    //     );
 
-        //Codifico a JWT (payload, clave, algoritmo de codificación)
-        $token = JWT::encode($payload, 'miClaveSecreta', 'HS256');
+    //     //Codifico a JWT (payload, clave, algoritmo de codificación)
+    //     $token = JWT::encode($payload, 'miClaveSecreta', 'HS256');
 
-        $newResponse = $response->withStatus(200, 'Exito! Json enviado');
+    //     $newResponse = $response->withStatus(200, 'Exito! Json enviado');
 
-        //Genero el json a partir del array
-        $newResponse->getBody()->write(json_encode($token));
+    //     //Genero el json a partir del array
+    //     $newResponse->getBody()->write(json_encode($token));
 
-        return $newResponse->withHeader('Content-Type', 'application/json');
-    }
+    //     return $newResponse->withHeader('Content-Type', 'application/json');
+    // }
 
-    public static function VerificarToken()
-    {
-        $datos = "Lo devuelto por getParsedBody"; //debería ser del header
-        $token = $datos['token'];
+    // public static function VerificarToken()
+    // {
+    //     $datos = "Lo devuelto por getParsedBody"; //debería ser del header
+    //     $token = $datos['token'];
 
-        $retorno = new stdClass();
-        $status = 200;
+    //     $retorno = new stdClass();
+    //     $status = 200;
 
-        try {
-            //Decodifico el token recibido
-            JWT::decode(
-                $token,                   //JWT
-                'miClaveSecreta',         //Clave usada en la creación
-                ['HS256']                 //Algoritmo de codificación
-            );
-        } catch (Exception $e) {
-            $retorno->mensaje = "Token no valido! ---> " - $e->getMessage();
-            $status = 500;
-        }
+    //     try {
+    //         //Decodifico el token recibido
+    //         JWT::decode(
+    //             $token,                   //JWT
+    //             'miClaveSecreta',         //Clave usada en la creación
+    //             ['HS256']                 //Algoritmo de codificación
+    //         );
+    //     } catch (Exception $e) {
+    //         $retorno->mensaje = "Token no valido! ---> " - $e->getMessage();
+    //         $status = 500;
+    //     }
 
-        $newResponse = $response->withStatus($status);
+    //     $newResponse = $response->withStatus($status);
 
-        //Genero el json a partir del array
-        $newResponse->getBody()->write(json_encode($retorno));
+    //     //Genero el json a partir del array
+    //     $newResponse->getBody()->write(json_encode($retorno));
 
-        return $newResponse->withHeader('Content-Type', 'application/json');
-    }
+    //     return $newResponse->withHeader('Content-Type', 'application/json');
+    // }
 }
