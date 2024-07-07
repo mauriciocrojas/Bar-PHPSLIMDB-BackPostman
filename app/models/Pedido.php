@@ -152,11 +152,12 @@ class Pedido
         INNER JOIN producto pr ON pepr.idproducto = pr.idproducto
         INNER JOIN pedido pe ON pe.idpedido = pepr.idpedido
         WHERE pr.tipo = 'Comida' AND pepr.idpedido = pe.idpedido
-        AND pe.idpedido = :idpedido)
-        WHERE idpedido = :idpedido");
+        AND pe.idpedido = :idpedidosub)
+        WHERE idpedido = :idpedidomain");
     
-        $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
-        $consulta->execute();
+    $consulta->bindValue(':idpedidosub', $id, PDO::PARAM_INT);
+    $consulta->bindValue(':idpedidomain', $id, PDO::PARAM_INT);
+    $consulta->execute();
     }
 
 
@@ -169,11 +170,11 @@ class Pedido
         INNER JOIN producto pr ON pepr.idproducto = pr.idproducto
         INNER JOIN pedido pe ON pe.idpedido = pepr.idpedido
         WHERE pr.tipo = 'Bebida' AND pepr.idpedido = pe.idpedido
-        AND pe.idpedido = :idpedido) 
-        WHERE idpedido = :idpedido AND tiempoestimado IS NULL");
+        AND pe.idpedido = :idpedidosub) 
+        WHERE idpedido = :idpedidomain AND tiempoestimado IS NULL");
     
-        $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
-        $consulta->execute();
+    $consulta->bindValue(':idpedidosub', $id, PDO::PARAM_INT);
+    $consulta->bindValue(':idpedidomain', $id, PDO::PARAM_INT);        $consulta->execute();
     }
 
     public static function generarCodigoAlfanumerico() {
