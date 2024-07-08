@@ -283,8 +283,8 @@ class Pedido
     public static function obtenerTodosPedidosSocio()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT idpedido IdPedido, codigopedido CodigoPedido, idmesa Mesa, nombrecliente Cliente, estado EstadoPedido, 
-        tiempoestimado TiempoDePreparacion FROM pedido");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT idpedido IdPedido, idmesa Mesa, estado EstadoPedido, 
+        tiempoestimado Demora FROM pedido");
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
