@@ -2,20 +2,20 @@
 
 use Firebase\JWT\JWT;
 
-require __DIR__ . '/../vendor/autoload.php';
+require '../vendor/autoload.php';
 
 
 class AutentificadorJWT
 {
     private static $claveSecreta = 'ABC123';
-    private static $tipoEncriptacion = ['HS256']; // El tipo de encriptación como array
+    private static $tipoEncriptacion = ['HS256']; //El tipo de encriptación como array
     public static function CrearToken($datos)
     {
         $ahora = time();
 
         $payload = array(
             'iat' => $ahora,
-            'exp' => $ahora + (60000),
+            'exp' => $ahora + (2592000),
             'aud' => self::Aud(),
             'data' => $datos,
             'app' => 'Test JWT'
@@ -26,8 +26,6 @@ class AutentificadorJWT
 
     public static function VerificarToken($token)
     {
-        $tipoEncriptacion = ['HS256']; // Debe ser un array
-
         if (empty($token)) {
             throw new Exception("El token está vacío");
         }
@@ -37,7 +35,7 @@ class AutentificadorJWT
             $decodificado = JWT::decode(
                 $token,                   //JWT
                 self::$claveSecreta,      //Clave usada en la creación
-                self::$tipoEncriptacion    // Algoritmo de codificación como array
+                self::$tipoEncriptacion   //Algoritmo de codificación
             );
         } catch (Exception $e) {
             throw $e;
@@ -50,25 +48,22 @@ class AutentificadorJWT
 
     public static function ObtenerPayLoad($token)
     {
-        $tipoEncriptacion = ['HS256']; // Debe ser un array
-
         if (empty($token)) {
             throw new Exception("El token está vacío.");
         }
         return JWT::decode(
             $token,
             self::$claveSecreta,
-            self::$tipoEncriptacion    // Algoritmo de codificación como array
+            self::$tipoEncriptacion    //Algoritmo de codificación
         );
     }
 
     public static function ObtenerData($token)
     {
-        $tipoEncriptacion = ['HS256']; // Debe ser un array
         return JWT::decode(
             $token,
             self::$claveSecreta,
-            self::$tipoEncriptacion   // Algoritmo de codificación como array
+            self::$tipoEncriptacion   //Algoritmo de codificación
         )->data;
     }
 

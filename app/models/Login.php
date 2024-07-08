@@ -1,7 +1,8 @@
 <?php
 
 require_once './models/Usuario.php';
-
+require_once './utils/AutentificadorJWT.php';
+require '../vendor/autoload.php';
 
 class Login
 {
@@ -17,7 +18,10 @@ class Login
             $listaUsuarios = Usuario::obtenerTodos();
             foreach ($listaUsuarios as $usuario) {
                 if ($parametros['usuario'] == $usuario->nombre && $parametros['clave'] == $usuario->clave && $usuario->estado == 'Activo') {
-                    $payload = json_encode(array("mensaje" => "Logueo exitoso"));
+
+                    $datos = $usuario->nombre . $usuario->tipo;
+                    $token = AutentificadorJWT::CrearToken($datos);
+                    $payload = json_encode(array("mensaje" => "Logueo exitoso de $usuario->tipo", 'jwt' => $token));
                     $existeUsuario = true;
                     $faltaParam = false;
                     break;
@@ -44,6 +48,4 @@ class Login
         return $response
             ->withHeader('Content-Type', 'application/json');
     }
-
-
 }
