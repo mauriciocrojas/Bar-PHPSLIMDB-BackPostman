@@ -57,10 +57,10 @@ $app->group('/productos', function (RouteCollectorProxy $group) {
 // Routes Mesa
 $app->group('/mesas', function (RouteCollectorProxy $group) {
   $group->get('[/]', \MesaController::class . ':TraerTodos');
-  $group->get('/{id}', \MesaController::class . ':TraerUno');
   $group->post('[/]', \MesaController::class . ':CargarUno');
   $group->put('/modificarestado/{id}', \MesaController::class . ':ModificarUno');
   $group->delete('/eliminarmesa/{id}', \MesaController::class . ':BorrarUno');
+  $group->get('/estadosmesa', \MesaController::class . ':TraerTodosSocio');
 });
 
 

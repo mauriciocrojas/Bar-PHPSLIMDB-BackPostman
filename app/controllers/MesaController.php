@@ -77,4 +77,14 @@ class MesaController extends Mesa implements IApiUsable
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
+
+  public function TraerTodosSocio($request, $response, $args)
+  {
+    $lista = Mesa::obtenerTodosSocio();
+    $payload = json_encode(array("listaMesas" => $lista));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
 }

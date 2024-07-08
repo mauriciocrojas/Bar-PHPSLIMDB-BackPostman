@@ -55,4 +55,13 @@ public $codigoidentificacion;
         $consulta->bindValue(':idmesa', $idmesa, PDO::PARAM_INT);
         $consulta->execute();
     }
+
+    public static function obtenerTodosSocio()
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT idmesa, estado, codigoidentificacion FROM mesa");
+        $consulta->execute();
+
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Mesa');
+    }
 }
