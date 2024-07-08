@@ -384,4 +384,42 @@ class Pedido
         $consulta->bindValue(':idmesa', $idMesa, PDO::PARAM_INT);
         $consulta->execute();
     }
+
+    public function AltaEncuesta($codigoMesa, $codigoPedido, $puntajeRestaurante, $puntajeMesa, $puntajeMozo, $puntajeCocinero, $comentario)
+    {
+
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO encuesta 
+        (codigomesa, codigopedido, puntajerestaurante, puntajemesa, puntajemozo, puntajecocinero, comentario) 
+        VALUES 
+        (:codigoMesa, :codigoPedido, :puntajeRestaurante, :puntajeMesa, :puntajeMozo, :puntajeCocinero, :comentario)");
+        $consulta->bindValue(':codigoMesa', $codigoMesa, PDO::PARAM_STR);
+        $consulta->bindValue(':codigoPedido', $codigoPedido, PDO::PARAM_STR);
+        $consulta->bindValue(':puntajeRestaurante', $puntajeRestaurante, PDO::PARAM_INT);
+        $consulta->bindValue(':puntajeMesa', $puntajeMesa, PDO::PARAM_INT);
+        $consulta->bindValue(':puntajeMozo', $puntajeMozo, PDO::PARAM_INT);
+        $consulta->bindValue(':puntajeCocinero', $puntajeCocinero, PDO::PARAM_INT);
+        $consulta->bindValue(':comentario', $comentario, PDO::PARAM_STR);
+        $consulta->execute();
+
+
+        return $objAccesoDatos->obtenerUltimoId();
+    }
+
+
+    public static function MejoresComentarios()
+    {
+        $objAccesoDato = AccesoDatos::obtenerInstancia();
+
+        $consulta = $objAccesoDato->prepararConsulta(
+            "SELECT (puntajeRestaurante + puntajeMesa + puntajeMozo + puntajeCocinero) / 4 AS promedio, comentario
+            FROM encuesta
+            HAVING promedio >= 8
+            ORDER BY promedio DESC
+            LIMIT 3;"
+        );
+
+        $consulta->execute();
+        return $consulta->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

@@ -100,8 +100,8 @@ $app->group('/pedidoaccion', function (RouteCollectorProxy $group) {
   $group->get('/entregarpedidococinero/{id}', \PedidoController::class . ':EntregarPedidoCocineroController');
   $group->get('/pedidoslistos', \PedidoController::class . ':TraerTodosListos');
   $group->get('/entregaracliente/{id}', \PedidoController::class . ':EntregarPedidoAClienteController');
-
-
+  $group->post('/realizarencuesta', \PedidoController::class . ':AltaEncuestaController');
+  $group->get('/mejorescomentarios', \PedidoController::class . ':MejoresComentariosController');
 });
 
 

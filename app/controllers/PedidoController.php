@@ -218,11 +218,11 @@ class PedidoController extends Pedido implements IApiUsable
     if ($pedido) {
       $tiempoPreparacion = $pedido['TiempoDePreparacion'];
       $mensaje = "El tiempo de demora de su pedido es de $tiempoPreparacion minutos";
-  } else {
+    } else {
       $mensaje = "No se encontró el pedido con el código proporcionado y la mesa especificada.";
-  }
+    }
 
-  $payload = json_encode(["mensaje" => $mensaje]);
+    $payload = json_encode(["mensaje" => $mensaje]);
     $response->getBody()->write($payload);
     return $response
       ->withHeader('Content-Type', 'application/json');
@@ -263,7 +263,7 @@ class PedidoController extends Pedido implements IApiUsable
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
-  
+
   public function EntregarPedidoCocineroController($request, $response, $args)
   {
 
@@ -289,6 +289,33 @@ class PedidoController extends Pedido implements IApiUsable
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
+  public function AltaEncuestaController($request, $response, $args)
+  {
+    $parametros = $request->getParsedBody();
 
 
+    $codigoMesa = $parametros['codigomesa'];
+    $codigoPedido = $parametros['codigopedido'];
+    $puntajeRestaurante = $parametros['puntajerestaurante'];
+    $puntajeMesa = $parametros['puntajeMesa'];
+    $puntajeMozo = $parametros['puntajeMozo'];
+    $puntajeCocinero = $parametros['puntajeCocinero'];
+    $comentario = $parametros['comentarios'];
+
+    Pedido::AltaEncuesta($codigoMesa, $codigoPedido, $puntajeRestaurante, $puntajeMesa, $puntajeMozo, $puntajeCocinero, $comentario);
+    $payload = json_encode(array("mensaje" => "Encuesta realizada con éxito"));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+
+  public function MejoresComentariosController($request, $response, $args)
+  {
+    $mejoresComentarios = Pedido::MejoresComentarios();
+    $payload = json_encode(array("Mejores comentarios" => $mejoresComentarios));
+
+    $response->getBody()->write($payload);
+    return $response->withHeader('Content-Type', 'application/json');
+  }
 }
