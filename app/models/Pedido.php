@@ -315,14 +315,6 @@ class Pedido
     public static function EntregarPedidoBartender($id)
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
-        // $consulta = $objAccesoDato->prepararConsulta(
-        //     "UPDATE pedido SET estado = 'En preparacion'
-        // WHERE idpedido = :idpedidomain AND tiempoestimado IS NULL"
-        // );
-
-        // $consulta->bindValue(':idpedidosub', $id, PDO::PARAM_INT);
-        // $consulta->bindValue(':idpedidomain', $id, PDO::PARAM_INT);
-        // $consulta->execute();
 
         $consulta = $objAccesoDato->prepararConsulta(
             "UPDATE pedidoproducto pp
@@ -337,14 +329,6 @@ class Pedido
     public static function EntregarPedidoCervecero($id)
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
-        // $consulta = $objAccesoDato->prepararConsulta(
-        //     "UPDATE pedido SET estado = 'En preparacion'
-        // WHERE idpedido = :idpedidomain AND tiempoestimado IS NULL"
-        // );
-
-        // $consulta->bindValue(':idpedidosub', $id, PDO::PARAM_INT);
-        // $consulta->bindValue(':idpedidomain', $id, PDO::PARAM_INT);
-        // $consulta->execute();
 
         $consulta = $objAccesoDato->prepararConsulta(
             "UPDATE pedidoproducto pp

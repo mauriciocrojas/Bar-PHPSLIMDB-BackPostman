@@ -78,8 +78,29 @@ class Mesa
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
 
-        $consulta = $objAccesoDato->prepararConsulta("UPDATE mesa SET estado = 'Cerrada' WHERE idmesa = :idmesa");
+        $consulta = $objAccesoDato->prepararConsulta(
+            "UPDATE mesa 
+            SET estado = 'Cerrada' 
+            WHERE idmesa = :idmesa"
+        );
         $consulta->bindValue(':idmesa', $idMesa, PDO::PARAM_INT);
         $consulta->execute();
+    }
+
+
+    public static function MesaMasUsada()
+    {
+        $objAccesoDato = AccesoDatos::obtenerInstancia();
+
+        $consulta = $objAccesoDato->prepararConsulta(
+            "SELECT idmesa
+             FROM pedido
+             GROUP BY idmesa
+             ORDER BY COUNT(*) DESC
+             LIMIT 1"
+        );
+
+        $consulta->execute();
+        return $consulta->fetch(PDO::FETCH_ASSOC);
     }
 }

@@ -63,6 +63,7 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
   $group->get('/estadosmesa', \MesaController::class . ':TraerTodosSocio');
   $group->get('/cobrarcliente/{idmesa}', \MesaController::class . ':MozaCobraClienteController');
   $group->get('/cerrarmesa/{idmesa}', \MesaController::class . ':SocioCierraMesaController');
+  $group->get('/mesamasusada', \MesaController::class . ':MesaMasUsadaController');
 });
 
 
