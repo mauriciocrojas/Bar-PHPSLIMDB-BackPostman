@@ -63,10 +63,18 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
   $group->post('[/]', \MesaController::class . ':CargarUno');
   $group->put('/modificarestado/{id}', \MesaController::class . ':ModificarUno');
   $group->delete('/eliminarmesa/{id}', \MesaController::class . ':BorrarUno');
-  $group->get('/estadosmesa', \MesaController::class . ':TraerTodosSocio');
-  $group->get('/cobrarcliente/{idmesa}', \MesaController::class . ':MozaCobraClienteController');
-  $group->get('/cerrarmesa/{idmesa}', \MesaController::class . ':SocioCierraMesaController');
-  $group->get('/mesamasusada', \MesaController::class . ':MesaMasUsadaController');
+
+  $group->get('/estadosmesa', \MesaController::class . ':TraerTodosSocio')
+  ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoSocio')->add(\AutLoggerMW::class . ':ValidarToken');
+
+  $group->get('/cobrarcliente/{idmesa}', \MesaController::class . ':MozaCobraClienteController')
+    ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoMozo')->add(\AutLoggerMW::class . ':ValidarToken');
+
+  $group->get('/cerrarmesa/{idmesa}', \MesaController::class . ':SocioCierraMesaController')
+    ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoSocio')->add(\AutLoggerMW::class . ':ValidarToken');
+
+  $group->get('/mesamasusada', \MesaController::class . ':MesaMasUsadaController')
+  ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoSocio')->add(\AutLoggerMW::class . ':ValidarToken');
 });
 
 
@@ -88,25 +96,58 @@ $app->group('/log', function (RouteCollectorProxy $group) {
 
 // Routes PedidoAccion
 $app->group('/pedidoaccion', function (RouteCollectorProxy $group) {
-  $group->get('/pedidosmozo', \PedidoController::class . ':TraerTodosSolicitados');
+
+  $group->get('/pedidosmozo', \PedidoController::class . ':TraerTodosSolicitados')
+    ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoMozo')->add(\AutLoggerMW::class . ':ValidarToken');
+
   $group->get('/tomarpedidomozo/{id}', \PedidoController::class . ':TomarPedidoMozoController')
     ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoMozo')->add(\AutLoggerMW::class . ':ValidarToken');
-  $group->post('/cargarimagenmesa/{idpedido}', \PedidoController::class . ':CargarImagenMesaMozo');
-  $group->get('/pedidoscocineros', \PedidoController::class . ':TraerTodosTomadosPorMozoYEnPreparacionComida');
-  $group->get('/pedidosbartender', \PedidoController::class . ':TraerTodosTomadosPorMozoYEnPreparacionBartender');
-  $group->get('/pedidoscerveceros', \PedidoController::class . ':TraerTodosTomadosPorMozoYEnPreparacionCervecero');
-  $group->get('/tomarpedidoBartender/{id}', \PedidoController::class . ':TomarPedidoBartenderController');
-  $group->get('/tomarpedidoCervecero/{id}', \PedidoController::class . ':TomarPedidoCerveceroController');
-  $group->get('/tomarpedidococinero/{id}', \PedidoController::class . ':TomarPedidoCocineroController');
+
+  $group->post('/cargarimagenmesa/{idpedido}', \PedidoController::class . ':CargarImagenMesaMozo')
+    ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoMozo')->add(\AutLoggerMW::class . ':ValidarToken');
+
+  $group->get('/pedidoscocineros', \PedidoController::class . ':TraerTodosTomadosPorMozoYEnPreparacionComida')
+    ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoCocinero')->add(\AutLoggerMW::class . ':ValidarToken');
+
+  $group->get('/pedidosbartender', \PedidoController::class . ':TraerTodosTomadosPorMozoYEnPreparacionBartender')
+    ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoBartender')->add(\AutLoggerMW::class . ':ValidarToken');
+
+  $group->get('/pedidoscerveceros', \PedidoController::class . ':TraerTodosTomadosPorMozoYEnPreparacionCervecero')
+    ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoCervecero')->add(\AutLoggerMW::class . ':ValidarToken');
+
+  $group->get('/tomarpedidoBartender/{id}', \PedidoController::class . ':TomarPedidoBartenderController')
+    ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoBartender')->add(\AutLoggerMW::class . ':ValidarToken');
+
+  $group->get('/tomarpedidoCervecero/{id}', \PedidoController::class . ':TomarPedidoCerveceroController')
+    ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoCervecero')->add(\AutLoggerMW::class . ':ValidarToken');
+
+  $group->get('/tomarpedidococinero/{id}', \PedidoController::class . ':TomarPedidoCocineroController')
+    ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoCocinero')->add(\AutLoggerMW::class . ':ValidarToken');
+
   $group->post('/traerpedidocliente', \PedidoController::class . ':TraerPedidoCliente');
-  $group->get('/', \PedidoController::class . ':TraerTodosPedidosSocio');
-  $group->get('/entregarpedidoBartender/{id}', \PedidoController::class . ':EntregarPedidoBartenderController');
-  $group->get('/entregarpedidoCervecero/{id}', \PedidoController::class . ':EntregarPedidoCerveceroController');
-  $group->get('/entregarpedidococinero/{id}', \PedidoController::class . ':EntregarPedidoCocineroController');
-  $group->get('/pedidoslistos', \PedidoController::class . ':TraerTodosListos');
-  $group->get('/entregaracliente/{id}', \PedidoController::class . ':EntregarPedidoAClienteController');
+
+  $group->get('/', \PedidoController::class . ':TraerTodosPedidosSocio')
+    ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoSocio')->add(\AutLoggerMW::class . ':ValidarToken');
+
+  $group->get('/entregarpedidoBartender/{id}', \PedidoController::class . ':EntregarPedidoBartenderController')
+    ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoBartender')->add(\AutLoggerMW::class . ':ValidarToken');
+
+  $group->get('/entregarpedidoCervecero/{id}', \PedidoController::class . ':EntregarPedidoCerveceroController')
+    ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoCervecero')->add(\AutLoggerMW::class . ':ValidarToken');
+
+  $group->get('/entregarpedidococinero/{id}', \PedidoController::class . ':EntregarPedidoCocineroController')
+    ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoCocinero')->add(\AutLoggerMW::class . ':ValidarToken');
+
+  $group->get('/pedidoslistos', \PedidoController::class . ':TraerTodosListos')
+    ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoMozo')->add(\AutLoggerMW::class . ':ValidarToken');
+
+  $group->get('/entregaracliente/{id}', \PedidoController::class . ':EntregarPedidoAClienteController')
+    ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoMozo')->add(\AutLoggerMW::class . ':ValidarToken');
+
   $group->post('/realizarencuesta', \PedidoController::class . ':AltaEncuestaController');
-  $group->get('/mejorescomentarios', \PedidoController::class . ':MejoresComentariosController');
+
+  $group->get('/mejorescomentarios', \PedidoController::class . ':MejoresComentariosController')
+    ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoSocio')->add(\AutLoggerMW::class . ':ValidarToken');
 });
 
 
