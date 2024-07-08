@@ -87,4 +87,17 @@ class MesaController extends Mesa implements IApiUsable
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
+
+  public function MozaCobraClienteController($request, $response, $args)
+  {
+
+    $idmesa = $args['idmesa'];
+    Mesa::MozaCobraCliente($idmesa);
+
+    $payload = json_encode(array("mensaje" => "El mozo cobró al cliente"));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
 }

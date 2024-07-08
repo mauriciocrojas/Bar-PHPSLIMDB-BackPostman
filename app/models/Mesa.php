@@ -2,9 +2,9 @@
 
 class Mesa
 {
-public $idmesa;
-public $estado;
-public $codigoidentificacion;
+    public $idmesa;
+    public $estado;
+    public $codigoidentificacion;
 
     public function crearMesa()
     {
@@ -28,7 +28,7 @@ public $codigoidentificacion;
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Mesa');
     }
 
-    public static function obtenerMesa ($idmesa)
+    public static function obtenerMesa($idmesa)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("SELECT idmesa, estado, codigoidentificacion FROM mesa WHERE idmesa = :idmesa");
@@ -63,5 +63,14 @@ public $codigoidentificacion;
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Mesa');
+    }
+
+    public static function MozaCobraCliente($idMesa)
+    {
+        $objAccesoDato = AccesoDatos::obtenerInstancia();
+
+        $consulta = $objAccesoDato->prepararConsulta("UPDATE mesa SET estado = 'Cliente pagando' WHERE idmesa = :idmesa");
+        $consulta->bindValue(':idmesa', $idMesa, PDO::PARAM_INT);
+        $consulta->execute();
     }
 }

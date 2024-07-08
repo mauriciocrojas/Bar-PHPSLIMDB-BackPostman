@@ -61,6 +61,7 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
   $group->put('/modificarestado/{id}', \MesaController::class . ':ModificarUno');
   $group->delete('/eliminarmesa/{id}', \MesaController::class . ':BorrarUno');
   $group->get('/estadosmesa', \MesaController::class . ':TraerTodosSocio');
+  $group->get('/cobrarcliente/{idmesa}', \MesaController::class . ':MozaCobraClienteController');
 });
 
 

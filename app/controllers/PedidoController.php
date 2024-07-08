@@ -289,4 +289,6 @@ class PedidoController extends Pedido implements IApiUsable
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
+
+
 }
