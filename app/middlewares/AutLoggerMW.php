@@ -9,8 +9,6 @@ class AutLoggerMW
 
     public static function ValidarToken(Request $request, RequestHandler $handler): Response
     {
-        echo "entre a primera validacion\n";
-
         $header = $request->getHeaderLine('Authorization');
         $token = trim(explode("Bearer", $header)[1]);
 
@@ -27,7 +25,7 @@ class AutLoggerMW
     }
 
 
-    public static function VerificarTipoEmpleadoMozo ($request, $handler) 
+    public static function VerificarTipoEmpleadoMozo($request, $handler)
     {
         $header = $request->getHeaderLine('Authorization');
         $token = trim(explode("Bearer", $header)[1]);
@@ -36,12 +34,13 @@ class AutLoggerMW
 
         $parametros = (array) AutentificadorJWT::ObtenerData($token);
 
-        var_dump ($parametros);
+        echo "Estás intentanto ingresar con los datos de: " . $parametros["usuario"] . ", perfil: " . $parametros["tipo"] . "\n";
+
         $tipoEmpleado = $parametros['tipo'];
 
-        if($tipoEmpleado == 'Mozo'){
+        if ($tipoEmpleado == 'Mozo') {
             $response = $handler->handle($request);
-        }else{
+        } else {
             $payload = json_encode(array('mensaje' => 'No sos mozo'));
             $response->getBody()->write($payload);
         }
