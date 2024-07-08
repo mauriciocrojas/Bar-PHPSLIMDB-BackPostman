@@ -15,12 +15,15 @@ require '../vendor/autoload.php';
 
 require_once './db/AccesoDatos.php';
 
+require_once './models/Login.php';
+
 require_once './controllers/UsuarioController.php';
 require_once './controllers/ProductoController.php';
 require_once './controllers/MesaController.php';
 require_once './controllers/PedidoController.php';
+
 require_once './middlewares/AuthPedidoMW.php';
-require_once './models/Login.php';
+require_once './middlewares/AutLoggerMW.php';
 
 // Load ENV
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -86,7 +89,8 @@ $app->group('/log', function (RouteCollectorProxy $group) {
 // Routes PedidoAccion
 $app->group('/pedidoaccion', function (RouteCollectorProxy $group) {
   $group->get('/pedidosmozo', \PedidoController::class . ':TraerTodosSolicitados');
-  $group->get('/tomarpedidomozo/{id}', \PedidoController::class . ':TomarPedidoMozoController');
+  $group->get('/tomarpedidomozo/{id}', \PedidoController::class . ':TomarPedidoMozoController')->add(\AutLoggerMW::class . ':PrimeraValidacionToken');
+  //->add(\AutLoggerMW::class . ':VerificarTipoEmpleado');
   $group->post('/cargarimagenmesa/{idpedido}', \PedidoController::class . ':CargarImagenMesaMozo');
   $group->get('/pedidoscocineros', \PedidoController::class . ':TraerTodosTomadosPorMozoYEnPreparacionComida');
   $group->get('/pedidosbartender', \PedidoController::class . ':TraerTodosTomadosPorMozoYEnPreparacionBartender');
