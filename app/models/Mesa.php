@@ -73,4 +73,13 @@ class Mesa
         $consulta->bindValue(':idmesa', $idMesa, PDO::PARAM_INT);
         $consulta->execute();
     }
+
+    public static function SocioCierraMesa($idMesa)
+    {
+        $objAccesoDato = AccesoDatos::obtenerInstancia();
+
+        $consulta = $objAccesoDato->prepararConsulta("UPDATE mesa SET estado = 'Cerrada' WHERE idmesa = :idmesa");
+        $consulta->bindValue(':idmesa', $idMesa, PDO::PARAM_INT);
+        $consulta->execute();
+    }
 }
