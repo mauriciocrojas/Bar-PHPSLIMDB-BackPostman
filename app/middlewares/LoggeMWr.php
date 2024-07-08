@@ -1,6 +1,6 @@
 <?php
 
-class Logger
+class LoggerMW
 {
     public static function LogOperacion($request, $response, $next)
     {
