@@ -63,7 +63,7 @@ class Pedido
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido IdPedido, pe.idmesa Mesa, pe.nombrecliente Cliente, pe.estado EstadoPedido, 
-        pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto , pp.cantidad Cantidad, pe.ubicacionimagen UbicacionImagen, pe.codigopedido CodigoPedido FROM pedido pe 
+        pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto , pp.cantidad Cantidad, pe.codigopedido CodigoPedido FROM pedido pe 
         inner join pedidoproducto pp on pe.idpedido = pp.idpedido
         inner join producto pr on pp.idproducto = pr.idproducto
         WHERE pe.estado = 'Solicitado'");
@@ -88,8 +88,8 @@ class Pedido
     public static function obtenerTodosTomadosPorMozoYEnPreparacionComida()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido IdPedido, pe.idmesa Mesa, pe.nombrecliente Cliente, pe.estado EstadoPedido, 
-        pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto, pp.cantidad Cantidad, pp.estadoproducto EstadoProducto, pe.ubicacionimagen UbicacionImagen, pe.codigopedido CodigoPedido FROM pedido pe 
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido IdPedido, pe.idmesa Mesa, pe.estado EstadoPedido, 
+        pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto, pp.cantidad Cantidad, pp.estadoproducto EstadoProducto, pe.codigopedido CodigoPedido FROM pedido pe 
         inner join pedidoproducto pp on pe.idpedido = pp.idpedido
         inner join producto pr on pp.idproducto = pr.idproducto
         WHERE pe.estado in ('Tomado por mozo','En preparacion') AND pr.tipo = 'Comida'");
@@ -101,8 +101,8 @@ class Pedido
     public static function obtenerTodosTomadosPorMozoYEnPreparacionBartender()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido IdPedido, pe.idmesa Mesa, pe.nombrecliente Cliente, pe.estado EstadoPedido, 
-        pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto, pp.cantidad Cantidad, pp.estadoproducto EstadoProducto, pe.ubicacionimagen UbicacionImagen, pe.codigopedido CodigoPedido FROM pedido pe 
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido IdPedido, pe.idmesa Mesa, pe.estado EstadoPedido, 
+        pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto, pp.cantidad Cantidad, pp.estadoproducto EstadoProducto, pe.codigopedido CodigoPedido FROM pedido pe 
         inner join pedidoproducto pp on pe.idpedido = pp.idpedido
         inner join producto pr on pp.idproducto = pr.idproducto
         WHERE pe.estado in ('Tomado por mozo','En preparacion') AND pr.tipo = 'Trago'");
@@ -114,8 +114,8 @@ class Pedido
     public static function obtenerTodosTomadosPorMozoYEnPreparacionCervecero()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido IdPedido, pe.idmesa Mesa, pe.nombrecliente Cliente, pe.estado EstadoPedido, 
-        pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto, pp.cantidad Cantidad, pp.estadoproducto EstadoProducto, pe.ubicacionimagen UbicacionImagen, pe.codigopedido CodigoPedido FROM pedido pe 
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido IdPedido, pe.idmesa Mesa, pe.estado EstadoPedido, 
+        pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto, pp.cantidad Cantidad, pp.estadoproducto EstadoProducto, pe.codigopedido CodigoPedido FROM pedido pe 
         inner join pedidoproducto pp on pe.idpedido = pp.idpedido
         inner join producto pr on pp.idproducto = pr.idproducto
         WHERE pe.estado in ('Tomado por mozo','En preparacion') AND pr.tipo = 'Cerveza'");
