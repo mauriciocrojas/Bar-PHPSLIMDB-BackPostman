@@ -86,10 +86,17 @@ $app->group('/pedidoaccion', function (RouteCollectorProxy $group) {
   $group->get('/tomarpedidomozo/{id}', \PedidoController::class . ':TomarPedidoMozoController');
   $group->post('/cargarimagenmesa/{idpedido}', \PedidoController::class . ':CargarImagenMesaMozo');
   $group->get('/pedidoscocineros', \PedidoController::class . ':TraerTodosTomadosPorMozoYEnPreparacionComida');
-  $group->get('/pedidosbebida', \PedidoController::class . ':TraerTodosTomadosPorMozoYEnPreparacionBebida');
+  $group->get('/pedidosbartender', \PedidoController::class . ':TraerTodosTomadosPorMozoYEnPreparacionBartender');
+  $group->get('/pedidoscerveceros', \PedidoController::class . ':TraerTodosTomadosPorMozoYEnPreparacionCervecero');
+  $group->get('/tomarpedidoBartender/{id}', \PedidoController::class . ':TomarPedidoBartenderController');
+  $group->get('/tomarpedidoCervecero/{id}', \PedidoController::class . ':TomarPedidoCerveceroController');
   $group->get('/tomarpedidococinero/{id}', \PedidoController::class . ':TomarPedidoCocineroController');
-  $group->get('/tomarpedidoBartenderCervecero/{id}', \PedidoController::class . ':TomarPedidoBartenderCocineroController');
   $group->post('/traerpedidocliente', \PedidoController::class . ':TraerPedidoCliente');
+  $group->get('/', \PedidoController::class . ':TraerTodosPedidosSocio');
+  $group->get('/entregarpedidoBartender/{id}', \PedidoController::class . ':EntregarPedidoBartenderController');
+  $group->get('/entregarpedidoCervecero/{id}', \PedidoController::class . ':EntregarPedidoCerveceroController');
+  $group->get('/entregarpedidococinero/{id}', \PedidoController::class . ':EntregarPedidoCocineroController');
+
 });
 
 

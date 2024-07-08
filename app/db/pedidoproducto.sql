@@ -31,7 +31,8 @@ CREATE TABLE `pedidoproducto` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `idpedido` int(11) NOT NULL,
   `idproducto` int(11) NOT NULL,
-  `cantidad` int(11) NOT NULL
+  `cantidad` int(11) NOT NULL,
+  `estadoproducto` varchar(50) default 'Solicitado'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --

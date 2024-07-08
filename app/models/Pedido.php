@@ -51,7 +51,7 @@ class Pedido
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido IdPedido, pe.idmesa Mesa, pe.nombrecliente Cliente, pe.estado EstadoPedido, 
-        pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto , pp.cantidad Cantidad, pe.ubicacionimagen UbicacionImagen, pe.codigopedido CodigoPedido FROM pedido pe 
+        pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto , pp.cantidad Cantidad, pp.estadoproducto EstadoProducto, pe.ubicacionimagen UbicacionImagen, pe.codigopedido CodigoPedido FROM pedido pe 
         inner join pedidoproducto pp on pe.idpedido = pp.idpedido
         inner join producto pr on pp.idproducto = pr.idproducto");
         $consulta->execute();
@@ -85,18 +85,32 @@ class Pedido
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
     }
 
-    public static function obtenerTodosTomadosPorMozoYEnPreparacionBebida()
+    public static function obtenerTodosTomadosPorMozoYEnPreparacionBartender()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido IdPedido, pe.idmesa Mesa, pe.nombrecliente Cliente, pe.estado EstadoPedido, 
         pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto , pp.cantidad Cantidad, pe.ubicacionimagen UbicacionImagen, pe.codigopedido CodigoPedido FROM pedido pe 
         inner join pedidoproducto pp on pe.idpedido = pp.idpedido
         inner join producto pr on pp.idproducto = pr.idproducto
-        WHERE pe.estado in ('Tomado por mozo','En preparacion') AND pr.tipo = 'Bebida'");
+        WHERE pe.estado in ('Tomado por mozo','En preparacion') AND pr.tipo = 'Trago'");
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
     }
+
+    public static function obtenerTodosTomadosPorMozoYEnPreparacionCervecero()
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido IdPedido, pe.idmesa Mesa, pe.nombrecliente Cliente, pe.estado EstadoPedido, 
+        pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto , pp.cantidad Cantidad, pe.ubicacionimagen UbicacionImagen, pe.codigopedido CodigoPedido FROM pedido pe 
+        inner join pedidoproducto pp on pe.idpedido = pp.idpedido
+        inner join producto pr on pp.idproducto = pr.idproducto
+        WHERE pe.estado in ('Tomado por mozo','En preparacion') AND pr.tipo = 'Cerveza'");
+        $consulta->execute();
+
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
+    }
+
     public static function obtenerPedido($id)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
@@ -133,10 +147,12 @@ class Pedido
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDato->prepararConsulta("UPDATE pedido SET estado = 'Tomado por mozo', codigopedido = :codigo WHERE idpedido = :idpedido");
-
         $codigoPedido = Pedido::generarCodigoAlfanumerico();
-
         $consulta->bindValue(':codigo', $codigoPedido, PDO::PARAM_STR);
+        $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
+        $consulta->execute();
+
+        $consulta = $objAccesoDato->prepararConsulta("UPDATE pedidoproducto SET estadoproducto = 'Tomado por mozo' WHERE idpedido = :idpedido");
         $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
         $consulta->execute();
 
@@ -159,10 +175,19 @@ class Pedido
         $consulta->bindValue(':idpedidosub', $id, PDO::PARAM_INT);
         $consulta->bindValue(':idpedidomain', $id, PDO::PARAM_INT);
         $consulta->execute();
+
+        $consulta = $objAccesoDato->prepararConsulta(
+            "UPDATE pedidoproducto pp
+            INNER JOIN producto p ON pp.idproducto = p.idproducto
+            SET pp.estadoproducto = 'En preparacion'
+            WHERE p.tipo = 'Comida' AND pp.idpedido = :idpedido"
+        );
+        $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
+        $consulta->execute();
     }
 
 
-    public static function TomarPedidoBartenderCervecero($id)
+    public static function TomarPedidoBartender($id)
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDato->prepararConsulta(
@@ -170,13 +195,49 @@ class Pedido
         FROM pedidoproducto pepr 
         INNER JOIN producto pr ON pepr.idproducto = pr.idproducto
         INNER JOIN pedido pe ON pe.idpedido = pepr.idpedido
-        WHERE pr.tipo = 'Bebida' AND pepr.idpedido = pe.idpedido
+        WHERE pr.tipo = 'Trago' AND pepr.idpedido = pe.idpedido
         AND pe.idpedido = :idpedidosub) 
         WHERE idpedido = :idpedidomain AND tiempoestimado IS NULL"
         );
 
         $consulta->bindValue(':idpedidosub', $id, PDO::PARAM_INT);
         $consulta->bindValue(':idpedidomain', $id, PDO::PARAM_INT);
+        $consulta->execute();
+
+        $consulta = $objAccesoDato->prepararConsulta(
+            "UPDATE pedidoproducto pp
+            INNER JOIN producto p ON pp.idproducto = p.idproducto
+            SET pp.estadoproducto = 'En preparacion'
+            WHERE p.tipo = 'Trago' AND pp.idpedido = :idpedido"
+        );
+        $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
+        $consulta->execute();
+    }
+
+    public static function TomarPedidoCervecero($id)
+    {
+        $objAccesoDato = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDato->prepararConsulta(
+            "UPDATE pedido SET estado = 'En preparacion', tiempoestimado = (SELECT MAX(pr.tiempopreparacion) 
+        FROM pedidoproducto pepr 
+        INNER JOIN producto pr ON pepr.idproducto = pr.idproducto
+        INNER JOIN pedido pe ON pe.idpedido = pepr.idpedido
+        WHERE pr.tipo = 'Cerveza' AND pepr.idpedido = pe.idpedido
+        AND pe.idpedido = :idpedidosub) 
+        WHERE idpedido = :idpedidomain AND tiempoestimado IS NULL"
+        );
+
+        $consulta->bindValue(':idpedidosub', $id, PDO::PARAM_INT);
+        $consulta->bindValue(':idpedidomain', $id, PDO::PARAM_INT);
+        $consulta->execute();
+
+        $consulta = $objAccesoDato->prepararConsulta(
+            "UPDATE pedidoproducto pp
+            INNER JOIN producto p ON pp.idproducto = p.idproducto
+            SET pp.estadoproducto = 'En preparacion'
+            WHERE p.tipo = 'Cerveza' AND pp.idpedido = :idpedido"
+        );
+        $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
         $consulta->execute();
     }
 
@@ -195,5 +256,81 @@ class Pedido
         $consulta->execute();
 
         return $consulta->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public static function obtenerTodosPedidosSocio()
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT idpedido IdPedido, codigopedido CodigoPedido, idmesa Mesa, nombrecliente Cliente, estado EstadoPedido, 
+        tiempoestimado TiempoDePreparacion FROM pedido");
+        $consulta->execute();
+
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
+    }
+
+    public static function EntregarPedidoCocinero($id)
+    {
+        $objAccesoDato = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDato->prepararConsulta(
+            "UPDATE pedido SET estado = 'Listo para servir'
+        WHERE idpedido = :idpedido"
+        );
+
+        $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
+        $consulta->execute();
+
+        $consulta = $objAccesoDato->prepararConsulta(
+            "UPDATE pedidoproducto pp
+            INNER JOIN producto p ON pp.idproducto = p.idproducto
+            SET pp.estadoproducto = 'Listo para servir'
+            WHERE p.tipo = 'Comida' AND pp.idpedido = :idpedido"
+        );
+        $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
+        $consulta->execute();
+    }
+
+
+    public static function EntregarPedidoBartender($id)
+    {
+        $objAccesoDato = AccesoDatos::obtenerInstancia();
+        // $consulta = $objAccesoDato->prepararConsulta(
+        //     "UPDATE pedido SET estado = 'En preparacion'
+        // WHERE idpedido = :idpedidomain AND tiempoestimado IS NULL"
+        // );
+
+        // $consulta->bindValue(':idpedidosub', $id, PDO::PARAM_INT);
+        // $consulta->bindValue(':idpedidomain', $id, PDO::PARAM_INT);
+        // $consulta->execute();
+
+        $consulta = $objAccesoDato->prepararConsulta(
+            "UPDATE pedidoproducto pp
+            INNER JOIN producto p ON pp.idproducto = p.idproducto
+            SET pp.estadoproducto = 'Listo para servir'
+            WHERE p.tipo = 'Trago' AND pp.idpedido = :idpedido"
+        );
+        $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
+        $consulta->execute();
+    }
+
+    public static function EntregarPedidoCervecero($id)
+    {
+        $objAccesoDato = AccesoDatos::obtenerInstancia();
+        // $consulta = $objAccesoDato->prepararConsulta(
+        //     "UPDATE pedido SET estado = 'En preparacion'
+        // WHERE idpedido = :idpedidomain AND tiempoestimado IS NULL"
+        // );
+
+        // $consulta->bindValue(':idpedidosub', $id, PDO::PARAM_INT);
+        // $consulta->bindValue(':idpedidomain', $id, PDO::PARAM_INT);
+        // $consulta->execute();
+
+        $consulta = $objAccesoDato->prepararConsulta(
+            "UPDATE pedidoproducto pp
+            INNER JOIN producto p ON pp.idproducto = p.idproducto
+            SET pp.estadoproducto = 'Listo para servir'
+            WHERE p.tipo = 'Cerveza' AND pp.idpedido = :idpedido"
+        );
+        $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
+        $consulta->execute();
     }
 }

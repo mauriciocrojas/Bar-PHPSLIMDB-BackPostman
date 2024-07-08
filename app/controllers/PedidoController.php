@@ -67,7 +67,7 @@ class PedidoController extends Pedido implements IApiUsable
   public function TraerTodosSolicitados($request, $response, $args)
   {
     $lista = Pedido::obtenerTodosSolicitados();
-    $payload = json_encode(array("listaPedidosSolicitados" => $lista));
+    $payload = json_encode(array("PendientesMozo" => $lista));
 
     $response->getBody()->write($payload);
     return $response
@@ -77,17 +77,27 @@ class PedidoController extends Pedido implements IApiUsable
   public function TraerTodosTomadosPorMozoYEnPreparacionComida($request, $response, $args)
   {
     $lista = Pedido::obtenerTodosTomadosPorMozoYEnPreparacionComida();
-    $payload = json_encode(array("listaPedidosTomadosPorMozoComida" => $lista));
+    $payload = json_encode(array("PendientesCocinero" => $lista));
 
     $response->getBody()->write($payload);
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
 
-  public function TraerTodosTomadosPorMozoYEnPreparacionBebida($request, $response, $args)
+  public function TraerTodosTomadosPorMozoYEnPreparacionBartender($request, $response, $args)
   {
-    $lista = Pedido::obtenerTodosTomadosPorMozoYEnPreparacionBebida();
-    $payload = json_encode(array("listaPedidosTomadosPorMozoBebida" => $lista));
+    $lista = Pedido::obtenerTodosTomadosPorMozoYEnPreparacionBartender();
+    $payload = json_encode(array("PendientesBartender" => $lista));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+
+  public function TraerTodosTomadosPorMozoYEnPreparacionCervecero($request, $response, $args)
+  {
+    $lista = Pedido::obtenerTodosTomadosPorMozoYEnPreparacionCervecero();
+    $payload = json_encode(array("PendientesCervecero" => $lista));
 
     $response->getBody()->write($payload);
     return $response
@@ -160,13 +170,26 @@ class PedidoController extends Pedido implements IApiUsable
       ->withHeader('Content-Type', 'application/json');
   }
 
-  public function TomarPedidoBartenderCocineroController($request, $response, $args)
+  public function TomarPedidoBartenderController($request, $response, $args)
   {
 
     $id = $args['id'];
-    Pedido::TomarPedidoCocinero($id);
+    Pedido::TomarPedidoBartender($id);
 
-    $payload = json_encode(array("mensaje" => "Pedido tomado por el Bartender/Cervecero, actualizado su tiempo de preparacion y estado, pedido id: $id"));
+    $payload = json_encode(array("mensaje" => "Pedido tomado por el bartender, actualizado su tiempo de preparacion y estado, pedido id: $id"));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+
+  public function TomarPedidoCerveceroController($request, $response, $args)
+  {
+
+    $id = $args['id'];
+    Pedido::TomarPedidoCervecero($id);
+
+    $payload = json_encode(array("mensaje" => "Pedido tomado por el cervecero, actualizado su tiempo de preparacion y estado, pedido id: $id"));
 
     $response->getBody()->write($payload);
     return $response
@@ -194,4 +217,54 @@ class PedidoController extends Pedido implements IApiUsable
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
+
+  public function TraerTodosPedidosSocio($request, $response, $args)
+  {
+    $lista = Pedido::obtenerTodosPedidosSocio();
+    $payload = json_encode(array("listaPedidos" => $lista));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+
+  public function EntregarPedidoBartenderController($request, $response, $args)
+  {
+
+    $id = $args['id'];
+    Pedido::EntregarPedidoBartender($id);
+
+    $payload = json_encode(array("mensaje" => "El bartender dejó el trago listo para servir"));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+
+  public function EntregarPedidoCerveceroController($request, $response, $args)
+  {
+
+    $id = $args['id'];
+    Pedido::EntregarPedidoCervecero($id);
+
+    $payload = json_encode(array("mensaje" => "El cervecero dejó la cerveza lista para servir"));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+  
+  public function EntregarPedidoCocineroController($request, $response, $args)
+  {
+
+    $id = $args['id'];
+    Pedido::EntregarPedidoCocinero($id);
+
+    $payload = json_encode(array("mensaje" => "El cocinero dejó la comida lista para servir"));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+
 }
