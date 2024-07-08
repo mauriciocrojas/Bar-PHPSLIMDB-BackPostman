@@ -19,7 +19,7 @@ class Login
             foreach ($listaUsuarios as $usuario) {
                 if ($parametros['usuario'] == $usuario->nombre && $parametros['clave'] == $usuario->clave && $usuario->estado == 'Activo') {
 
-                    $datos = $usuario->nombre . $usuario->tipo;
+                    $datos = array('usuario' => $usuario->nombre, 'tipo' => $usuario->tipo);
                     $token = AutentificadorJWT::CrearToken($datos);
                     $payload = json_encode(array("mensaje" => "Logueo exitoso de $usuario->tipo", 'jwt' => $token));
                     $existeUsuario = true;

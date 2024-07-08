@@ -89,8 +89,8 @@ $app->group('/log', function (RouteCollectorProxy $group) {
 // Routes PedidoAccion
 $app->group('/pedidoaccion', function (RouteCollectorProxy $group) {
   $group->get('/pedidosmozo', \PedidoController::class . ':TraerTodosSolicitados');
-  $group->get('/tomarpedidomozo/{id}', \PedidoController::class . ':TomarPedidoMozoController')->add(\AutLoggerMW::class . ':PrimeraValidacionToken');
-  //->add(\AutLoggerMW::class . ':VerificarTipoEmpleado');
+  $group->get('/tomarpedidomozo/{id}', \PedidoController::class . ':TomarPedidoMozoController')
+    ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoMozo')->add(\AutLoggerMW::class . ':ValidarToken');
   $group->post('/cargarimagenmesa/{idpedido}', \PedidoController::class . ':CargarImagenMesaMozo');
   $group->get('/pedidoscocineros', \PedidoController::class . ':TraerTodosTomadosPorMozoYEnPreparacionComida');
   $group->get('/pedidosbartender', \PedidoController::class . ':TraerTodosTomadosPorMozoYEnPreparacionBartender');

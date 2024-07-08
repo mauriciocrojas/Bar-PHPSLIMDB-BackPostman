@@ -69,6 +69,7 @@ class AutentificadorJWT
         )->data;
     }
 
+
     private static function Aud()
     {
         $aud = '';

@@ -7,7 +7,7 @@ use Slim\Psr7\Response;
 class AutLoggerMW
 {
 
-    public static function PrimeraValidacionToken(Request $request, RequestHandler $handler): Response
+    public static function ValidarToken(Request $request, RequestHandler $handler): Response
     {
         echo "entre a primera validacion\n";
 
@@ -27,7 +27,7 @@ class AutLoggerMW
     }
 
 
-    public static function VerificarTipoEmpleado ($request, $handler) 
+    public static function VerificarTipoEmpleadoMozo ($request, $handler) 
     {
         $header = $request->getHeaderLine('Authorization');
         $token = trim(explode("Bearer", $header)[1]);
