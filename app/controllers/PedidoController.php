@@ -74,6 +74,16 @@ class PedidoController extends Pedido implements IApiUsable
       ->withHeader('Content-Type', 'application/json');
   }
 
+  public function TraerTodosListos($request, $response, $args)
+  {
+    $lista = Pedido::obtenerTodosListosParaServir();
+    $payload = json_encode(array("Listos para servir" => $lista));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+
   public function TraerTodosTomadosPorMozoYEnPreparacionComida($request, $response, $args)
   {
     $lista = Pedido::obtenerTodosTomadosPorMozoYEnPreparacionComida();
@@ -267,4 +277,16 @@ class PedidoController extends Pedido implements IApiUsable
       ->withHeader('Content-Type', 'application/json');
   }
 
+  public function EntregarPedidoAClienteController($request, $response, $args)
+  {
+
+    $id = $args['id'];
+    Pedido::EntregarPedidoACliente($id);
+
+    $payload = json_encode(array("mensaje" => "El mozo entregó el pedido al cliente"));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
 }
