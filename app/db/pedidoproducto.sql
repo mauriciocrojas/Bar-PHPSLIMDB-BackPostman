@@ -38,6 +38,17 @@ CREATE TABLE `pedidoproducto` (
 --
 -- Volcado de datos para la tabla `pedidoproducto`
 --
+ALTER TABLE
+  `pedidoproducto`
+ADD
+  `tiempoestimado` INT NULL DEFAULT NULL,
+ADD
+  `fechafinalizacion` DATE NULL DEFAULT NULL,
+ADD
+  `tiempopreparacion` INT NULL DEFAULT NULL,
+ADD
+  `fechacomienzo` DATE NULL DEFAULT NULL;
+
 
 INSERT INTO `pedidoproducto` (`idpedido`, `idproducto`, `cantidad`) VALUES
 (1, 2, 3);
