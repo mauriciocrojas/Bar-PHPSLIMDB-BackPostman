@@ -185,7 +185,8 @@ class Pedido
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDato->prepararConsulta(
-            "UPDATE pedido SET estado = 'En preparacion', tiempoestimado = (SELECT MAX(pr.tiempopreparacion) 
+            "UPDATE pedido 
+            SET estado = 'En preparacion', tiempoestimado = (SELECT MAX(pr.tiempopreparacion) 
         FROM pedidoproducto pepr 
         INNER JOIN producto pr ON pepr.idproducto = pr.idproducto
         INNER JOIN pedido pe ON pe.idpedido = pepr.idpedido
@@ -201,10 +202,21 @@ class Pedido
         $consulta = $objAccesoDato->prepararConsulta(
             "UPDATE pedidoproducto pp
             INNER JOIN producto p ON pp.idproducto = p.idproducto
-            SET pp.estadoproducto = 'En preparacion'
-            WHERE p.tipo = 'Comida' AND pp.idpedido = :idpedido"
+            SET pp.estadoproducto = 'En preparacion',
+                pp.tiempoestimado = (
+                    SELECT MAX(pr.tiempopreparacion) 
+                    FROM pedidoproducto pepr 
+                    INNER JOIN producto pr ON pepr.idproducto = pr.idproducto
+                    INNER JOIN pedido pe ON pe.idpedido = pepr.idpedido
+                    WHERE pr.tipo = 'Comida' 
+                    AND pepr.idpedido = pe.idpedido
+                    AND pe.idpedido = :idpedidosub
+                )
+            WHERE p.tipo = 'Comida' AND pp.idpedido = :idpedidomain"
         );
-        $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
+        
+        $consulta->bindValue(':idpedidosub', $id, PDO::PARAM_INT);
+        $consulta->bindValue(':idpedidomain', $id, PDO::PARAM_INT);
         $consulta->execute();
     }
 
@@ -229,10 +241,21 @@ class Pedido
         $consulta = $objAccesoDato->prepararConsulta(
             "UPDATE pedidoproducto pp
             INNER JOIN producto p ON pp.idproducto = p.idproducto
-            SET pp.estadoproducto = 'En preparacion'
-            WHERE p.tipo = 'Trago' AND pp.idpedido = :idpedido"
+            SET pp.estadoproducto = 'En preparacion',
+                pp.tiempoestimado = (
+                    SELECT MAX(pr.tiempopreparacion) 
+                    FROM pedidoproducto pepr 
+                    INNER JOIN producto pr ON pepr.idproducto = pr.idproducto
+                    INNER JOIN pedido pe ON pe.idpedido = pepr.idpedido
+                    WHERE pr.tipo = 'Trago' 
+                    AND pepr.idpedido = pe.idpedido
+                    AND pe.idpedido = :idpedidosub
+                )
+            WHERE p.tipo = 'Trago' AND pp.idpedido = :idpedidomain"
         );
-        $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
+        
+        $consulta->bindValue(':idpedidosub', $id, PDO::PARAM_INT);
+        $consulta->bindValue(':idpedidomain', $id, PDO::PARAM_INT);
         $consulta->execute();
     }
 
@@ -256,10 +279,21 @@ class Pedido
         $consulta = $objAccesoDato->prepararConsulta(
             "UPDATE pedidoproducto pp
             INNER JOIN producto p ON pp.idproducto = p.idproducto
-            SET pp.estadoproducto = 'En preparacion'
-            WHERE p.tipo = 'Cerveza' AND pp.idpedido = :idpedido"
+            SET pp.estadoproducto = 'En preparacion',
+                pp.tiempoestimado = (
+                    SELECT MAX(pr.tiempopreparacion) 
+                    FROM pedidoproducto pepr 
+                    INNER JOIN producto pr ON pepr.idproducto = pr.idproducto
+                    INNER JOIN pedido pe ON pe.idpedido = pepr.idpedido
+                    WHERE pr.tipo = 'Cerveza' 
+                    AND pepr.idpedido = pe.idpedido
+                    AND pe.idpedido = :idpedidosub
+                )
+            WHERE p.tipo = 'Cerveza' AND pp.idpedido = :idpedidomain"
         );
-        $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
+        
+        $consulta->bindValue(':idpedidosub', $id, PDO::PARAM_INT);
+        $consulta->bindValue(':idpedidomain', $id, PDO::PARAM_INT);
         $consulta->execute();
     }
 
