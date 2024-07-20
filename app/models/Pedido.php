@@ -191,10 +191,12 @@ class Pedido
         INNER JOIN producto pr ON pepr.idproducto = pr.idproducto
         INNER JOIN pedido pe ON pe.idpedido = pepr.idpedido
         WHERE pr.tipo = 'Comida' AND pepr.idpedido = pe.idpedido
-        AND pe.idpedido = :idpedidosub)
+        AND pe.idpedido = :idpedidosub),
+        fechacomienzo = :fechacomienzo
         WHERE idpedido = :idpedidomain"
         );
 
+        $consulta->bindValue(':fechacomienzo', date('Y-m-d H:i'), PDO::PARAM_STR);
         $consulta->bindValue(':idpedidosub', $id, PDO::PARAM_INT);
         $consulta->bindValue(':idpedidomain', $id, PDO::PARAM_INT);
         $consulta->execute();
@@ -211,10 +213,12 @@ class Pedido
                     WHERE pr.tipo = 'Comida' 
                     AND pepr.idpedido = pe.idpedido
                     AND pe.idpedido = :idpedidosub
-                )
+                ),
+                fechacomienzo = :fechacomienzo
             WHERE p.tipo = 'Comida' AND pp.idpedido = :idpedidomain"
         );
-        
+
+        $consulta->bindValue(':fechacomienzo', date('Y-m-d H:i'), PDO::PARAM_STR);
         $consulta->bindValue(':idpedidosub', $id, PDO::PARAM_INT);
         $consulta->bindValue(':idpedidomain', $id, PDO::PARAM_INT);
         $consulta->execute();
@@ -230,10 +234,12 @@ class Pedido
         INNER JOIN producto pr ON pepr.idproducto = pr.idproducto
         INNER JOIN pedido pe ON pe.idpedido = pepr.idpedido
         WHERE pr.tipo = 'Trago' AND pepr.idpedido = pe.idpedido
-        AND pe.idpedido = :idpedidosub) 
+        AND pe.idpedido = :idpedidosub),
+        fechacomienzo = :fechacomienzo 
         WHERE idpedido = :idpedidomain AND tiempoestimado IS NULL"
         );
 
+        $consulta->bindValue(':fechacomienzo', date('Y-m-d H:i'), PDO::PARAM_STR);
         $consulta->bindValue(':idpedidosub', $id, PDO::PARAM_INT);
         $consulta->bindValue(':idpedidomain', $id, PDO::PARAM_INT);
         $consulta->execute();
@@ -250,10 +256,12 @@ class Pedido
                     WHERE pr.tipo = 'Trago' 
                     AND pepr.idpedido = pe.idpedido
                     AND pe.idpedido = :idpedidosub
-                )
+                ),
+                fechacomienzo = :fechacomienzo
             WHERE p.tipo = 'Trago' AND pp.idpedido = :idpedidomain"
         );
-        
+
+        $consulta->bindValue(':fechacomienzo', date('Y-m-d H:i'), PDO::PARAM_STR);
         $consulta->bindValue(':idpedidosub', $id, PDO::PARAM_INT);
         $consulta->bindValue(':idpedidomain', $id, PDO::PARAM_INT);
         $consulta->execute();
@@ -263,15 +271,18 @@ class Pedido
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDato->prepararConsulta(
-            "UPDATE pedido SET estado = 'En preparacion', tiempoestimado = (SELECT MAX(pr.tiempopreparacion) 
+            "UPDATE pedido
+             SET estado = 'En preparacion', tiempoestimado = (SELECT MAX(pr.tiempopreparacion) 
         FROM pedidoproducto pepr 
         INNER JOIN producto pr ON pepr.idproducto = pr.idproducto
         INNER JOIN pedido pe ON pe.idpedido = pepr.idpedido
         WHERE pr.tipo = 'Cerveza' AND pepr.idpedido = pe.idpedido
-        AND pe.idpedido = :idpedidosub) 
+        AND pe.idpedido = :idpedidosub),
+        fechacomienzo = :fechacomienzo
         WHERE idpedido = :idpedidomain AND tiempoestimado IS NULL"
         );
 
+        $consulta->bindValue(':fechacomienzo', date('Y-m-d H:i'), PDO::PARAM_STR);
         $consulta->bindValue(':idpedidosub', $id, PDO::PARAM_INT);
         $consulta->bindValue(':idpedidomain', $id, PDO::PARAM_INT);
         $consulta->execute();
@@ -288,10 +299,12 @@ class Pedido
                     WHERE pr.tipo = 'Cerveza' 
                     AND pepr.idpedido = pe.idpedido
                     AND pe.idpedido = :idpedidosub
-                )
+                ),
+                fechacomienzo = :fechacomienzo
             WHERE p.tipo = 'Cerveza' AND pp.idpedido = :idpedidomain"
         );
-        
+
+        $consulta->bindValue(':fechacomienzo', date('Y-m-d H:i'), PDO::PARAM_STR);
         $consulta->bindValue(':idpedidosub', $id, PDO::PARAM_INT);
         $consulta->bindValue(':idpedidomain', $id, PDO::PARAM_INT);
         $consulta->execute();
