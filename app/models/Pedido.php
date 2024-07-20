@@ -341,19 +341,24 @@ class Pedido
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDato->prepararConsulta(
-            "UPDATE pedido SET estado = 'Listo para servir'
+            "UPDATE pedido SET estado = 'Listo para servir',
+            fechafinalizacion = :fechafinalizacion
         WHERE idpedido = :idpedido"
         );
 
+        $consulta->bindValue(':fechafinalizacion', date('Y-m-d H:i'), PDO::PARAM_STR);
         $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
         $consulta->execute();
 
         $consulta = $objAccesoDato->prepararConsulta(
             "UPDATE pedidoproducto pp
             INNER JOIN producto p ON pp.idproducto = p.idproducto
-            SET pp.estadoproducto = 'Listo para servir'
+            SET pp.estadoproducto = 'Listo para servir',
+            fechafinalizacion = :fechafinalizacion
             WHERE p.tipo = 'Comida' AND pp.idpedido = :idpedido"
         );
+
+        $consulta->bindValue(':fechafinalizacion', date('Y-m-d H:i'), PDO::PARAM_STR);
         $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
         $consulta->execute();
     }
@@ -366,9 +371,12 @@ class Pedido
         $consulta = $objAccesoDato->prepararConsulta(
             "UPDATE pedidoproducto pp
             INNER JOIN producto p ON pp.idproducto = p.idproducto
-            SET pp.estadoproducto = 'Listo para servir'
+            SET pp.estadoproducto = 'Listo para servir',
+            fechafinalizacion = :fechafinalizacion
             WHERE p.tipo = 'Trago' AND pp.idpedido = :idpedido"
         );
+
+        $consulta->bindValue(':fechafinalizacion', date('Y-m-d H:i'), PDO::PARAM_STR);
         $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
         $consulta->execute();
     }
@@ -380,9 +388,12 @@ class Pedido
         $consulta = $objAccesoDato->prepararConsulta(
             "UPDATE pedidoproducto pp
             INNER JOIN producto p ON pp.idproducto = p.idproducto
-            SET pp.estadoproducto = 'Listo para servir'
+            SET pp.estadoproducto = 'Listo para servir',
+            fechafinalizacion = :fechafinalizacion
             WHERE p.tipo = 'Cerveza' AND pp.idpedido = :idpedido"
         );
+
+        $consulta->bindValue(':fechafinalizacion', date('Y-m-d H:i'), PDO::PARAM_STR);
         $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
         $consulta->execute();
     }
