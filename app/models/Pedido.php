@@ -339,28 +339,48 @@ class Pedido
 
     public static function EntregarPedidoCocinero($id)
     {
+
         $objAccesoDato = AccesoDatos::obtenerInstancia();
+
+        $consulta = $objAccesoDato->prepararConsulta("SELECT fechacomienzo FROM pedido WHERE idpedido = :idpedido");
+        $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
+        $consulta->execute();
+
+        $fechacomienzo = $consulta->fetch(PDO::FETCH_COLUMN);
+        $fechafinalizacion = date('Y-m-d H:i');
+
+        $inicio = new DateTime($fechacomienzo);
+        $fin = new DateTime($fechafinalizacion);
+        $diferencia = $inicio->diff($fin);
+        $tiempopreparacion = ($diferencia->days * 1440) + ($diferencia->h * 60) + $diferencia->i;
+
         $consulta = $objAccesoDato->prepararConsulta(
             "UPDATE pedido SET estado = 'Listo para servir',
-            fechafinalizacion = :fechafinalizacion
+            fechafinalizacion = :fechafinalizacion,
+            tiempopreparacion = :tiempopreparacion
         WHERE idpedido = :idpedido"
         );
 
-        $consulta->bindValue(':fechafinalizacion', date('Y-m-d H:i'), PDO::PARAM_STR);
+        $consulta->bindValue(':fechafinalizacion', $fechafinalizacion, PDO::PARAM_STR);
+        $consulta->bindValue(':tiempopreparacion', $tiempopreparacion, PDO::PARAM_INT);
         $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
         $consulta->execute();
+
 
         $consulta = $objAccesoDato->prepararConsulta(
             "UPDATE pedidoproducto pp
             INNER JOIN producto p ON pp.idproducto = p.idproducto
             SET pp.estadoproducto = 'Listo para servir',
-            fechafinalizacion = :fechafinalizacion
+            pp.fechafinalizacion = :fechafinalizacion,
+            pp.tiempopreparacion = :tiempopreparacion
             WHERE p.tipo = 'Comida' AND pp.idpedido = :idpedido"
         );
 
-        $consulta->bindValue(':fechafinalizacion', date('Y-m-d H:i'), PDO::PARAM_STR);
+        $consulta->bindValue(':fechafinalizacion', $fechafinalizacion, PDO::PARAM_STR);
+        $consulta->bindValue(':tiempopreparacion', $tiempopreparacion, PDO::PARAM_INT);
         $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
         $consulta->execute();
+
     }
 
 
@@ -368,15 +388,29 @@ class Pedido
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
 
+        $consulta = $objAccesoDato->prepararConsulta("SELECT fechacomienzo FROM pedido WHERE idpedido = :idpedido");
+        $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
+        $consulta->execute();
+
+        $fechacomienzo = $consulta->fetch(PDO::FETCH_COLUMN);
+        $fechafinalizacion = date('Y-m-d H:i');
+
+        $inicio = new DateTime($fechacomienzo);
+        $fin = new DateTime($fechafinalizacion);
+        $diferencia = $inicio->diff($fin);
+        $tiempopreparacion = ($diferencia->days * 1440) + ($diferencia->h * 60) + $diferencia->i;
+
         $consulta = $objAccesoDato->prepararConsulta(
             "UPDATE pedidoproducto pp
             INNER JOIN producto p ON pp.idproducto = p.idproducto
             SET pp.estadoproducto = 'Listo para servir',
-            fechafinalizacion = :fechafinalizacion
+            fechafinalizacion = :fechafinalizacion,
+            pp.tiempopreparacion = :tiempopreparacion
             WHERE p.tipo = 'Trago' AND pp.idpedido = :idpedido"
         );
 
-        $consulta->bindValue(':fechafinalizacion', date('Y-m-d H:i'), PDO::PARAM_STR);
+        $consulta->bindValue(':fechafinalizacion', $fechafinalizacion, PDO::PARAM_STR);
+        $consulta->bindValue(':tiempopreparacion', $tiempopreparacion, PDO::PARAM_INT);
         $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
         $consulta->execute();
     }
@@ -385,15 +419,29 @@ class Pedido
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
 
+        $consulta = $objAccesoDato->prepararConsulta("SELECT fechacomienzo FROM pedido WHERE idpedido = :idpedido");
+        $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
+        $consulta->execute();
+
+        $fechacomienzo = $consulta->fetch(PDO::FETCH_COLUMN);
+        $fechafinalizacion = date('Y-m-d H:i');
+
+        $inicio = new DateTime($fechacomienzo);
+        $fin = new DateTime($fechafinalizacion);
+        $diferencia = $inicio->diff($fin);
+        $tiempopreparacion = ($diferencia->days * 1440) + ($diferencia->h * 60) + $diferencia->i;
+
         $consulta = $objAccesoDato->prepararConsulta(
             "UPDATE pedidoproducto pp
             INNER JOIN producto p ON pp.idproducto = p.idproducto
             SET pp.estadoproducto = 'Listo para servir',
-            fechafinalizacion = :fechafinalizacion
+            fechafinalizacion = :fechafinalizacion,
+            pp.tiempopreparacion = :tiempopreparacion
             WHERE p.tipo = 'Cerveza' AND pp.idpedido = :idpedido"
         );
 
-        $consulta->bindValue(':fechafinalizacion', date('Y-m-d H:i'), PDO::PARAM_STR);
+        $consulta->bindValue(':fechafinalizacion', $fechafinalizacion, PDO::PARAM_STR);
+        $consulta->bindValue(':tiempopreparacion', $tiempopreparacion, PDO::PARAM_INT);
         $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
         $consulta->execute();
     }
