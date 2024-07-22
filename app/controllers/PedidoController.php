@@ -238,6 +238,28 @@ class PedidoController extends Pedido implements IApiUsable
       ->withHeader('Content-Type', 'application/json');
   }
 
+  public function TraerTodosPedidosDemoradosSocio($request, $response, $args)
+  {
+    $lista = Pedido::obtenerTodosPedidosDemoradosSocio();
+    $payload = json_encode(array("listaPedidosDemorados" => $lista));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+
+  public function TraerTodosProductosDemoradosSocio($request, $response, $args)
+  {
+    $lista = Pedido::obtenerTodosProductosDemoradosSocio();
+    $payload = json_encode(array("listaProductosDemorados" => $lista));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
+
+
+
   public function EntregarPedidoBartenderController($request, $response, $args)
   {
 

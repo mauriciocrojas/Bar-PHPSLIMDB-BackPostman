@@ -68,7 +68,7 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
   $group->delete('/eliminarmesa/{id}', \MesaController::class . ':BorrarUno');
 
   $group->get('/estadosmesa', \MesaController::class . ':TraerTodosSocio')
-  ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoSocio')->add(\AutLoggerMW::class . ':ValidarToken');
+    ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoSocio')->add(\AutLoggerMW::class . ':ValidarToken');
 
   $group->get('/cobrarcliente/{idmesa}', \MesaController::class . ':MozaCobraClienteController')
     ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoMozo')->add(\AutLoggerMW::class . ':ValidarToken');
@@ -77,7 +77,7 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
     ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoSocio')->add(\AutLoggerMW::class . ':ValidarToken');
 
   $group->get('/mesamasusada', \MesaController::class . ':MesaMasUsadaController')
-  ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoSocio')->add(\AutLoggerMW::class . ':ValidarToken');
+    ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoSocio')->add(\AutLoggerMW::class . ':ValidarToken');
 });
 
 
@@ -129,8 +129,16 @@ $app->group('/pedidoaccion', function (RouteCollectorProxy $group) {
 
   $group->post('/traerpedidocliente', \PedidoController::class . ':TraerPedidoCliente');
 
-  $group->get('/', \PedidoController::class . ':TraerTodosPedidosSocio')
+  $group->get('/traerpedidossocio', \PedidoController::class . ':TraerTodosPedidosSocio')
     ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoSocio')->add(\AutLoggerMW::class . ':ValidarToken');
+
+  $group->get('/traerpedidosdemoradossocio', \PedidoController::class . ':TraerTodosPedidosDemoradosSocio')
+    ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoSocio')->add(\AutLoggerMW::class . ':ValidarToken');
+
+  $group->get('/traerproductosdemoradossocio', \PedidoController::class . ':TraerTodosProductosDemoradosSocio')
+    ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoSocio')->add(\AutLoggerMW::class . ':ValidarToken');
+
+
 
   $group->get('/entregarpedidoBartender/{id}', \PedidoController::class . ':EntregarPedidoBartenderController')
     ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoBartender')->add(\AutLoggerMW::class . ':ValidarToken');

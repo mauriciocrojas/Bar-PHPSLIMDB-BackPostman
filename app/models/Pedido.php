@@ -330,8 +330,31 @@ class Pedido
     public static function obtenerTodosPedidosSocio()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT idpedido IdPedido, idmesa Mesa, estado EstadoPedido, 
-        tiempoestimado Demora FROM pedido");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT idpedido IdPedido,codigopedido CodigoPedido,
+        idmesa Mesa, estado EstadoPedido, tiempoestimado TiempoEstimado, tiempopreparacion TiempoPreparacion
+        FROM pedido");
+        $consulta->execute();
+
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
+    }
+
+    public static function obtenerTodosPedidosDemoradosSocio()
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT idpedido IdPedido, codigopedido CodigoPedido,
+        idmesa Mesa,tiempoestimado TiempoEstimado, tiempopreparacion TiempoPreparacion FROM pedido
+        WHERE tiempopreparacion > tiempoestimado");
+        $consulta->execute();
+
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
+    }
+
+    public static function obtenerTodosProductosDemoradosSocio()
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT idpedido IdPedido, idproducto IdProducto,
+        tiempoestimado TiempoEstimado, tiempopreparacion TiempoPreparacion FROM pedidoproducto
+        WHERE tiempopreparacion > tiempoestimado");
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
@@ -380,7 +403,6 @@ class Pedido
         $consulta->bindValue(':tiempopreparacion', $tiempopreparacion, PDO::PARAM_INT);
         $consulta->bindValue(':idpedido', $id, PDO::PARAM_INT);
         $consulta->execute();
-
     }
 
 

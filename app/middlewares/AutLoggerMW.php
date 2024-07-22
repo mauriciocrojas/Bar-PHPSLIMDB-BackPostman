@@ -34,7 +34,7 @@ class AutLoggerMW
 
         $parametros = (array) AutentificadorJWT::ObtenerData($token);
 
-        echo "Estás intentanto ingresar con los datos de: " . $parametros["usuario"] . ", perfil: " . $parametros["tipo"] . "\n";
+        echo "Credenciales de acceso: " . $parametros["usuario"] . ", perfil: " . $parametros["tipo"] . "\n";
 
         $tipoEmpleado = $parametros['tipo'];
 
@@ -57,7 +57,7 @@ class AutLoggerMW
 
         $parametros = (array) AutentificadorJWT::ObtenerData($token);
 
-        echo "Estás intentanto ingresar con los datos de: " . $parametros["usuario"] . ", perfil: " . $parametros["tipo"] . "\n";
+        echo "Credenciales de acceso: " . $parametros["usuario"] . ", perfil: " . $parametros["tipo"] . "\n";
 
         $tipoEmpleado = $parametros['tipo'];
 
@@ -80,7 +80,7 @@ class AutLoggerMW
 
         $parametros = (array) AutentificadorJWT::ObtenerData($token);
 
-        echo "Estás intentanto ingresar con los datos de: " . $parametros["usuario"] . ", perfil: " . $parametros["tipo"] . "\n";
+        echo "Credenciales de acceso: " . $parametros["usuario"] . ", perfil: " . $parametros["tipo"] . "\n";
 
         $tipoEmpleado = $parametros['tipo'];
 
@@ -103,7 +103,7 @@ class AutLoggerMW
 
         $parametros = (array) AutentificadorJWT::ObtenerData($token);
 
-        echo "Estás intentanto ingresar con los datos de: " . $parametros["usuario"] . ", perfil: " . $parametros["tipo"] . "\n";
+        echo "Credenciales de acceso: " . $parametros["usuario"] . ", perfil: " . $parametros["tipo"] . "\n";
 
         $tipoEmpleado = $parametros['tipo'];
 
@@ -126,7 +126,7 @@ class AutLoggerMW
 
         $parametros = (array) AutentificadorJWT::ObtenerData($token);
 
-        echo "Estás intentanto ingresar con los datos de: " . $parametros["usuario"] . ", perfil: " . $parametros["tipo"] . "\n";
+        echo "Credenciales de acceso: " . $parametros["usuario"] . ", perfil: " . $parametros["tipo"] . "\n";
 
         $tipoEmpleado = $parametros['tipo'];
 
