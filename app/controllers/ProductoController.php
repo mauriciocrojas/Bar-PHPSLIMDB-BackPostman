@@ -121,7 +121,6 @@ class ProductoController extends Producto implements IApiUsable
       $tiempopreparacion = $datos[2];
       $precio = $datos[3];
 
-      // Crear el producto
       $producto = new Producto();
       $producto->descripcion = $descripcion;
       $producto->tipo = $tipo;
