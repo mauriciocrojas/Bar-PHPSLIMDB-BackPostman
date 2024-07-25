@@ -53,6 +53,8 @@ $app->group('/usuarios', function (RouteCollectorProxy $group) {
 
 // Routes Producto
 $app->group('/productos', function (RouteCollectorProxy $group) {
+  $group->get('/descargarCSV', \ProductoController::class . ':DescargarProductosCSV');
+  $group->get('/cargarCSV', \ProductoController::class . ':CargarProductoDesdeCSV');
   $group->get('[/]', \ProductoController::class . ':TraerTodos');
   $group->get('/{descripcionProducto}', \ProductoController::class . ':TraerUno');
   $group->post('[/]', \ProductoController::class . ':CargarUno');

@@ -7,7 +7,6 @@ class Producto
     public $tipo;
     public $tiempopreparacion;
     public $precio;
-    public $estado;
 
 
     public function crearProducto()
@@ -27,7 +26,7 @@ class Producto
     public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT idproducto, descripcion, estado, tipo, tiempopreparacion, precio FROM producto");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT idproducto, descripcion, tipo, tiempopreparacion, precio FROM producto");
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Producto');
@@ -36,7 +35,7 @@ class Producto
     public static function obtenerProducto($descripcion)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT idproducto, descripcion, estado, tipo, tiempopreparacion, precio FROM producto WHERE descripcion = :descripcion");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT idproducto, descripcion, tipo, tiempopreparacion, precio FROM producto WHERE descripcion = :descripcion");
         $consulta->bindValue(':descripcion', $descripcion, PDO::PARAM_STR);
         $consulta->execute();
 

@@ -78,4 +78,64 @@ class ProductoController extends Producto implements IApiUsable
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
+
+
+  public function DescargarProductosCSV($request, $response, $args)
+  {
+    $listaProductos = Producto::obtenerTodos();
+    $rutaArchivo = '../ArchivosCSV/productos.csv';
+
+    $archivo = fopen($rutaArchivo, 'w');
+
+    fputcsv($archivo, ['descripcion', 'tipo', 'tiempopreparacion', 'precio']);
+
+    foreach ($listaProductos as $producto) {
+      fputcsv($archivo, [
+        $producto->descripcion,
+        $producto->tipo,
+        $producto->tiempopreparacion,
+        $producto->precio
+      ]);
+    }
+
+    fclose($archivo);
+
+    $csv = file_get_contents($rutaArchivo);
+
+    $response->getBody()->write("Los datos descargardos del archivo CSV son los siguientes:\n\n" . $csv);
+    return $response
+      ->withHeader('Content-Type', 'text/csv')
+      ->withHeader('Content-Disposition', 'attachment; filename="productos.csv"');
+  }
+
+  public function CargarProductoDesdeCSV($request, $response, $args)
+  {
+    $rutaArchivo = '../ArchivosCSV/productos.csv';
+    $archivo = fopen($rutaArchivo, 'r');
+
+    fgetcsv($archivo);
+
+    while (($datos = fgetcsv($archivo, 1000, ',')) !== FALSE) {
+      $descripcion = $datos[0];
+      $tipo = $datos[1];
+      $tiempopreparacion = $datos[2];
+      $precio = $datos[3];
+
+      // Crear el producto
+      $producto = new Producto();
+      $producto->descripcion = $descripcion;
+      $producto->tipo = $tipo;
+      $producto->tiempopreparacion = $tiempopreparacion;
+      $producto->precio = $precio;
+      $producto->crearProducto();
+    }
+
+    fclose($archivo);
+
+    $payload = json_encode(array("mensaje" => "Productos cargados desde el archivo CSV con éxito"));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
 }
