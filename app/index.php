@@ -30,7 +30,6 @@ require_once './controllers/PedidoController.php';
 require_once './middlewares/AuthPedidoMW.php';
 require_once './middlewares/AutLoggerMW.php';
 
-
 require_once('../fpdf186/fpdf.php');
 
 // Load ENV
