@@ -61,4 +61,13 @@ class LoginController
         $logueo->crearAccion();
 
     }
+
+    public static function obtenerParametrosDelToken($request) {
+        $token = $request->getHeaderLine('Authorization');
+
+        if (strpos($token, 'Bearer ') === 0) {
+            $token = substr($token, 7);
+        }
+        return (array) AutentificadorJWT::ObtenerData($token);
+    }
 }
