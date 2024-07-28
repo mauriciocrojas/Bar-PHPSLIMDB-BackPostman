@@ -2,6 +2,7 @@
 require_once './models/Pedido.php';
 require_once './interfaces/IApiUsable.php';
 
+
 class PedidoController extends Pedido implements IApiUsable
 {
 
@@ -9,12 +10,10 @@ class PedidoController extends Pedido implements IApiUsable
   {
     $parametros = $request->getParsedBody();
 
-
     $idmesa = $parametros['idmesa'];
     $nombrecliente = $parametros['nombrecliente'];
     $productos = json_decode($parametros['productos'], true);
 
-    // Creamos el pedido
     $pedido = new Pedido();
     $pedido->idmesa = $idmesa;
     $pedido->nombrecliente = $nombrecliente;
@@ -35,16 +34,12 @@ class PedidoController extends Pedido implements IApiUsable
     $archivosCargados = $request->getUploadedFiles();
     $imagenMesa = $archivosCargados['imagenmesa'];
 
-    // Nuevo nombre archivo
     $nuevoNombreImagen = date("d-m-Y") . ".jpg";
 
-    // Ruta a la que mandaremos el archivo
     $rutaImagen = "../ImagenesMesas2024/" . "IdPedido" . $idpedido . "_" . $nuevoNombreImagen;
 
-    // Guardo el archivo
     $imagenMesa->moveTo($rutaImagen);
 
-    // Guadamos la ubicación de la imagen en la base de datos
     Pedido::GuardarImagenMesa($rutaImagen, $idpedido);
 
     $payload = json_encode(array("mensaje" => "Imagen cargada con exito, guardada en el servidor, y su ubicacion en la base de datos"));
@@ -339,5 +334,52 @@ class PedidoController extends Pedido implements IApiUsable
 
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
+  }
+
+  public function GenerarPDF($request, $response, $args)
+  {
+    $pdf = new FPDF();
+    $pdf->AddPage();
+
+    //Logo
+    $pdf->Image('../img/logo.png', 170, 10, 30); 
+
+    //Titulo
+    $pdf->SetFont('Helvetica', 'B', 15);
+    $pdf->Ln(20);
+    $pdf->Cell(0, 10, 'Listado de pedidos', 0, 1, 'C');
+    $pdf->Line(80, 38, 130, 38);
+    $pdf->Ln(10);
+
+
+    //Cabecera tabla
+    $pdf->SetX(32);
+    $pdf->SetFont('Helvetica', 'B', 10);
+    $pdf->Cell(14, 10, 'IdPed', 1);
+    $pdf->Cell(16, 10, 'CodPed', 1);
+    $pdf->Cell(11, 10, 'Mesa', 1);
+    $pdf->Cell(16, 10, 'Cliente', 1);
+    $pdf->Cell(22, 10, 'Tiempo Est', 1);
+    $pdf->Cell(24, 10, 'Tiempo Prep', 1);
+    $pdf->Cell(35, 10, 'Estado', 1);
+    $pdf->Ln();
+
+    $datos = Pedido::obtenerTodosPedidos();
+
+    //Detalle tabla
+    $pdf->SetFont('Helvetica', '', 10);
+    foreach ($datos as $fila) {
+      $pdf->SetX(32);
+      $pdf->Cell(14, 10, $fila->IdPedido, 1);
+      $pdf->Cell(16, 10, $fila->CodigoPedido, 1);
+      $pdf->Cell(11, 10, $fila->Mesa, 1);
+      $pdf->Cell(16, 10, $fila->Cliente, 1);
+      $pdf->Cell(22, 10, $fila->TiempoEstimado, 1);
+      $pdf->Cell(24, 10, $fila->TiempoPreparacion, 1);
+      $pdf->Cell(35, 10, $fila->EstadoPedido, 1);
+      $pdf->Ln();
+    }
+
+    $pdf->Output('D', 'Pedidos.pdf');
   }
 }

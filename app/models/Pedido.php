@@ -47,6 +47,18 @@ class Pedido
         $consulta->execute();
     }
 
+        
+    public static function obtenerTodosPedidos()
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido IdPedido, pe.idmesa Mesa, pe.nombrecliente Cliente, pe.estado EstadoPedido, 
+        pe.tiempoestimado TiempoEstimado, pe.tiempopreparacion TiempoPreparacion, pe.ubicacionimagen UbicacionImagen, pe.codigopedido CodigoPedido
+         FROM pedido pe");
+        $consulta->execute();
+
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
+    }
+
     public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();

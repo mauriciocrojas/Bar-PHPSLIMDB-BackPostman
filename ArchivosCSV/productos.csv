@@ -1,2 +1,9 @@
 descripcion,tipo,tiempopreparacion,precio
+"Milanesa a caballo",Comida,20,5
+"Hamburguesa de garbanzo",Comida,25,4
+Corona,Cerveza,5,2
+Daikiri,Trago,5,3
+"Empanada de carne",Comida,15,1
+Honey,Cerveza,5,1
+"Gin Tonic",Trago,5,1
 "Papas fritas",Comida,15,3

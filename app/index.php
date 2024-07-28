@@ -14,6 +14,8 @@ use Slim\Factory\AppFactory;
 use Slim\Routing\RouteCollectorProxy;
 use Slim\Routing\RouteContext;
 
+
+
 require '../vendor/autoload.php';
 
 require_once './db/AccesoDatos.php';
@@ -27,6 +29,9 @@ require_once './controllers/PedidoController.php';
 
 require_once './middlewares/AuthPedidoMW.php';
 require_once './middlewares/AutLoggerMW.php';
+
+
+require_once('../fpdf186/fpdf.php');
 
 // Load ENV
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -85,6 +90,7 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
 
 // Routes Pedido
 $app->group('/pedidos', function (RouteCollectorProxy $group) {
+  $group->get('/generarPDF', \PedidoController::class . ':GenerarPDF');
   $group->get('[/]', \PedidoController::class . ':TraerTodos');
   $group->get('/{idpedido}', \PedidoController::class . ':TraerUno');
   $group->post('[/]', \PedidoController::class . ':CargarUno')->add(\AuthPedidoMW::class . ':ValidarParamsPedido');
