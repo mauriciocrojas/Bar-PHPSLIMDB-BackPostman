@@ -20,7 +20,7 @@ require '../vendor/autoload.php';
 
 require_once './db/AccesoDatos.php';
 
-require_once './models/Login.php';
+require_once './controllers/LoginController.php';
 
 require_once './controllers/UsuarioController.php';
 require_once './controllers/ProductoController.php';
@@ -99,7 +99,7 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
 
 // Routes Log
 $app->group('/log', function (RouteCollectorProxy $group) {
-  $group->post('[/]', \Login::class . ':ProcesoIngreso');
+  $group->post('[/]', \LoginController::class . ':ProcesoIngreso');
 });
 
 
