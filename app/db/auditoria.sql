@@ -7,3 +7,4 @@ CREATE TABLE auditoria (
 );
 
 ALTER TABLE `auditoria` ADD `entidad` VARCHAR(255);
+ALTER TABLE `auditoria` ADD `identidad` INT NULL DEFAULT NULL;

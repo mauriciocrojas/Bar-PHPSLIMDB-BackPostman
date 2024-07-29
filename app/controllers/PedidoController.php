@@ -46,7 +46,7 @@ class PedidoController extends Pedido implements IApiUsable
     $payload = json_encode(array("mensaje" => "Imagen cargada con exito, guardada en el servidor, y su ubicacion en la base de datos"));
 
     $parametros = LoginController::obtenerParametrosDelToken($request);
-    LoginController::GenerarAuditoria($parametros['usuario'], $parametros['tipo'], 'Cargar imagen', 'Pedido');
+    LoginController::GenerarAuditoria($parametros['usuario'], $parametros['tipo'], 'Cargar imagen', 'Pedido', $idpedido);
 
     $response->getBody()->write($payload);
     return $response
@@ -162,7 +162,7 @@ class PedidoController extends Pedido implements IApiUsable
     $payload = json_encode(array("mensaje" => "Pedido tomado por el mozo y actualizado su estado, codigo pedido: $codigoPedido, pedido id: $id"));
 
     $parametros = LoginController::obtenerParametrosDelToken($request);
-    LoginController::GenerarAuditoria($parametros['usuario'], $parametros['tipo'], 'Tomar pedido', 'Pedido');
+    LoginController::GenerarAuditoria($parametros['usuario'], $parametros['tipo'], 'Tomar pedido', 'Pedido', $id);
 
     $response->getBody()->write($payload);
     return $response
@@ -178,7 +178,7 @@ class PedidoController extends Pedido implements IApiUsable
     $payload = json_encode(array("mensaje" => "Pedido tomado por el cocinero, actualizado su tiempo de preparacion y estado, pedido id: $id"));
 
     $parametros = LoginController::obtenerParametrosDelToken($request);
-    LoginController::GenerarAuditoria($parametros['usuario'], $parametros['tipo'], 'Tomar pedido', 'Pedido');
+    LoginController::GenerarAuditoria($parametros['usuario'], $parametros['tipo'], 'Tomar pedido', 'Pedido', $id);
 
     $response->getBody()->write($payload);
     return $response
@@ -194,7 +194,7 @@ class PedidoController extends Pedido implements IApiUsable
     $payload = json_encode(array("mensaje" => "Pedido tomado por el bartender, actualizado su tiempo de preparacion y estado, pedido id: $id"));
 
     $parametros = LoginController::obtenerParametrosDelToken($request);
-    LoginController::GenerarAuditoria($parametros['usuario'], $parametros['tipo'], 'Tomar pedido', 'Pedido');
+    LoginController::GenerarAuditoria($parametros['usuario'], $parametros['tipo'], 'Tomar pedido', 'Pedido', $id);
 
     $response->getBody()->write($payload);
     return $response
@@ -210,7 +210,7 @@ class PedidoController extends Pedido implements IApiUsable
     $payload = json_encode(array("mensaje" => "Pedido tomado por el cervecero, actualizado su tiempo de preparacion y estado, pedido id: $id"));
 
     $parametros = LoginController::obtenerParametrosDelToken($request);
-    LoginController::GenerarAuditoria($parametros['usuario'], $parametros['tipo'], 'Tomar pedido', 'Pedido');
+    LoginController::GenerarAuditoria($parametros['usuario'], $parametros['tipo'], 'Tomar pedido', 'Pedido', $id);
 
     $response->getBody()->write($payload);
     return $response
@@ -280,7 +280,7 @@ class PedidoController extends Pedido implements IApiUsable
     $payload = json_encode(array("mensaje" => "El bartender dejó el trago listo para servir"));
 
     $parametros = LoginController::obtenerParametrosDelToken($request);
-    LoginController::GenerarAuditoria($parametros['usuario'], $parametros['tipo'], 'Entregar pedido', 'Pedido');
+    LoginController::GenerarAuditoria($parametros['usuario'], $parametros['tipo'], 'Entregar pedido', 'Pedido', $id);
 
     $response->getBody()->write($payload);
     return $response
@@ -296,7 +296,7 @@ class PedidoController extends Pedido implements IApiUsable
     $payload = json_encode(array("mensaje" => "El cervecero dejó la cerveza lista para servir"));
 
     $parametros = LoginController::obtenerParametrosDelToken($request);
-    LoginController::GenerarAuditoria($parametros['usuario'], $parametros['tipo'], 'Entregar pedido', 'Pedido');
+    LoginController::GenerarAuditoria($parametros['usuario'], $parametros['tipo'], 'Entregar pedido', 'Pedido', $id);
 
     $response->getBody()->write($payload);
     return $response
@@ -312,7 +312,7 @@ class PedidoController extends Pedido implements IApiUsable
     $payload = json_encode(array("mensaje" => "El cocinero dejó la comida lista para servir"));
 
     $parametros = LoginController::obtenerParametrosDelToken($request);
-    LoginController::GenerarAuditoria($parametros['usuario'], $parametros['tipo'], 'Entregar pedido', 'Pedido');
+    LoginController::GenerarAuditoria($parametros['usuario'], $parametros['tipo'], 'Entregar pedido', 'Pedido', $id);
 
     $response->getBody()->write($payload);
     return $response
@@ -328,7 +328,7 @@ class PedidoController extends Pedido implements IApiUsable
     $payload = json_encode(array("mensaje" => "El mozo entregó el pedido al cliente"));
 
     $parametros = LoginController::obtenerParametrosDelToken($request);
-    LoginController::GenerarAuditoria($parametros['usuario'], $parametros['tipo'], 'Entregar pedido', 'Pedido');
+    LoginController::GenerarAuditoria($parametros['usuario'], $parametros['tipo'], 'Entregar pedido', 'Pedido', $id);
 
     $response->getBody()->write($payload);
     return $response
