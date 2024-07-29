@@ -22,7 +22,7 @@ class LoginController
                     $token = AutentificadorJWT::CrearToken($datos);
                     $payload = json_encode(array("mensaje" => "Logueo exitoso de $usuario->tipo, su registro ha sido auditado.", 'JWT de ingreso:' => $token));
 
-                    LoginController::GenerarAuditoria($parametros['usuario'],$usuario->tipo,'Login');
+                    LoginController::GenerarAuditoria($parametros['usuario'],$usuario->tipo,'Login','Sistema');
 
                     $existeUsuario = true;
                     $faltaParam = false;
@@ -51,12 +51,13 @@ class LoginController
             ->withHeader('Content-Type', 'application/json');
     }
 
-    public static function GenerarAuditoria($usuario, $tipoUsuario, $accion){
+    public static function GenerarAuditoria($usuario, $tipoUsuario, $accion, $entidad){
 
         $logueo = new Login();
         $logueo->usuario = $usuario;
         $logueo->tipoUsuario = $tipoUsuario;
         $logueo->accion = $accion;
+        $logueo->entidad = $entidad;
         $logueo->fechaAccion = date('Y-m-d H:i');
         $logueo->crearAccion();
 

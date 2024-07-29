@@ -5,3 +5,5 @@ CREATE TABLE auditoria (
     tipousuario VARCHAR(255) NOT NULL,
     fechaaccion DATETIME NOT NULL
 );
+
+ALTER TABLE `auditoria` ADD `entidad` VARCHAR(255);
