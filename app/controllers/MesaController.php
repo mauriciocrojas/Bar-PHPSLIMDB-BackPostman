@@ -96,6 +96,10 @@ class MesaController extends Mesa implements IApiUsable
 
     $payload = json_encode(array("mensaje" => "El mozo cobró al cliente"));
 
+    $parametros = LoginController::obtenerParametrosDelToken($request);
+    LoginController::GenerarAuditoria($parametros['usuario'], $parametros['tipo'], 'Cobrar mesa');
+
+
     $response->getBody()->write($payload);
     return $response
       ->withHeader('Content-Type', 'application/json');
@@ -108,6 +112,9 @@ class MesaController extends Mesa implements IApiUsable
     Mesa::SocioCierraMesa($idmesa);
 
     $payload = json_encode(array("mensaje" => "El socio cerró la mesa"));
+
+    $parametros = LoginController::obtenerParametrosDelToken($request);
+    LoginController::GenerarAuditoria($parametros['usuario'], $parametros['tipo'], 'Cerrar mesa');
 
     $response->getBody()->write($payload);
     return $response
