@@ -116,13 +116,13 @@ $app->group('/pedidoaccion', function (RouteCollectorProxy $group) {
   $group->post('/cargarimagenmesa/{idpedido}', \PedidoController::class . ':CargarImagenMesaMozo')
     ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoMozo')->add(\AutLoggerMW::class . ':ValidarToken');
 
-  $group->get('/pedidoscocineros', \PedidoController::class . ':TraerTodosTomadosPorMozoYEnPreparacionComida')
+  $group->get('/pedidoscocineros', \PedidoController::class . ':TraerPendientesCocinero')
     ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoCocinero')->add(\AutLoggerMW::class . ':ValidarToken');
 
-  $group->get('/pedidosbartender', \PedidoController::class . ':TraerTodosTomadosPorMozoYEnPreparacionBartender')
+  $group->get('/pedidosbartender', \PedidoController::class . ':TraerPendientesBartender')
     ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoBartender')->add(\AutLoggerMW::class . ':ValidarToken');
 
-  $group->get('/pedidoscerveceros', \PedidoController::class . ':TraerTodosTomadosPorMozoYEnPreparacionCervecero')
+  $group->get('/pedidoscerveceros', \PedidoController::class . ':TraerPendientesCervecero')
     ->add(\AutLoggerMW::class . ':VerificarTipoEmpleadoCervecero')->add(\AutLoggerMW::class . ':ValidarToken');
 
   $group->get('/tomarpedidoBartender/{id}', \PedidoController::class . ':TomarPedidoBartenderController')

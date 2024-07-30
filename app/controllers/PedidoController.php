@@ -63,10 +63,30 @@ class PedidoController extends Pedido implements IApiUsable
       ->withHeader('Content-Type', 'application/json');
   }
 
+
   public function TraerTodosSolicitados($request, $response, $args)
   {
     $lista = Pedido::obtenerTodosSolicitados();
-    $payload = json_encode(array("PendientesMozo" => $lista));
+
+    $listaOk = [];
+
+    foreach ($lista as $pedido) {
+      $idPedido = $pedido['IdPedido'];
+
+      if (!isset($listaOk[$idPedido])) {
+        $listaOk[$idPedido] = [
+          'IdPedido' => $idPedido,
+          'Mesa' => $pedido['Mesa'],
+          'Cliente' => $pedido['Cliente'],
+          'EstadoPedido' => $pedido['EstadoPedido'],
+          'Productos' => ''
+        ];
+      }
+
+      $listaOk[$idPedido]['Productos'] .= $pedido['Producto'] . ' (' . $pedido['Cantidad'] . '). ';
+    }
+
+    $payload = json_encode(array("PendientesMozo" => array_values($listaOk)));
 
     $response->getBody()->write($payload);
     return $response
@@ -76,42 +96,117 @@ class PedidoController extends Pedido implements IApiUsable
   public function TraerTodosListos($request, $response, $args)
   {
     $lista = Pedido::obtenerTodosListosParaServir();
-    $payload = json_encode(array("Listos para servir" => $lista));
+    
+    $listaOk = [];
+
+    foreach ($lista as $pedido) {
+      $idPedido = $pedido['IdPedido'];
+
+      if (!isset($listaOk[$idPedido])) {
+        $listaOk[$idPedido] = [
+          'IdPedido' => $idPedido,
+          'Mesa' => $pedido['Mesa'],
+          'Cliente' => $pedido['Cliente'],
+          'EstadoPedido' => $pedido['EstadoPedido'],
+          'Productos' => ''
+        ];
+      }
+
+      $listaOk[$idPedido]['Productos'] .= $pedido['Producto'] . ' (' . $pedido['Cantidad'] . '). ';
+    }
+
+    $payload = json_encode(array("ListosParaServir" => array_values($listaOk)));
 
     $response->getBody()->write($payload);
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
 
-  public function TraerTodosTomadosPorMozoYEnPreparacionComida($request, $response, $args)
+  public function TraerPendientesCocinero($request, $response, $args)
   {
-    $lista = Pedido::obtenerTodosTomadosPorMozoYEnPreparacionComida();
-    $payload = json_encode(array("PendientesCocinero" => $lista));
+    $lista = Pedido::obtenerPendientesCocinero();
+
+    $listaOk = [];
+
+    foreach ($lista as $pedido) {
+      $idPedido = $pedido['IdPedido'];
+
+      if (!isset($listaOk[$idPedido])) {
+        $listaOk[$idPedido] = [
+          'IdPedido' => $idPedido,
+          'Mesa' => $pedido['Mesa'],
+          'EstadoPedido' => $pedido['EstadoPedido'],
+          'Productos' => ''
+        ];
+      }
+
+      $listaOk[$idPedido]['Productos'] .= $pedido['Producto'] . ' (' . $pedido['Cantidad'] . '). ';
+    }
+
+    $payload = json_encode(array("PendientesCocinero" => array_values($listaOk)));
 
     $response->getBody()->write($payload);
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
 
-  public function TraerTodosTomadosPorMozoYEnPreparacionBartender($request, $response, $args)
+
+
+  public function TraerPendientesBartender($request, $response, $args)
   {
-    $lista = Pedido::obtenerTodosTomadosPorMozoYEnPreparacionBartender();
-    $payload = json_encode(array("PendientesBartender" => $lista));
+    $lista = Pedido::ObtenerPendientesBartender();
+   
+    $listaOk = [];
+
+    foreach ($lista as $pedido) {
+      $idPedido = $pedido['IdPedido'];
+
+      if (!isset($listaOk[$idPedido])) {
+        $listaOk[$idPedido] = [
+          'IdPedido' => $idPedido,
+          'Mesa' => $pedido['Mesa'],
+          'EstadoPedido' => $pedido['EstadoPedido'],
+          'Productos' => ''
+        ];
+      }
+
+      $listaOk[$idPedido]['Productos'] .= $pedido['Producto'] . ' (' . $pedido['Cantidad'] . '). ';
+    }
+
+    $payload = json_encode(array("PendientesBartender" => array_values($listaOk)));
 
     $response->getBody()->write($payload);
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
 
-  public function TraerTodosTomadosPorMozoYEnPreparacionCervecero($request, $response, $args)
+  public function TraerPendientesCervecero($request, $response, $args)
   {
-    $lista = Pedido::obtenerTodosTomadosPorMozoYEnPreparacionCervecero();
-    $payload = json_encode(array("PendientesCervecero" => $lista));
+    $lista = Pedido::ObtenerPendientesCervecero();
+    $listaOk = [];
+
+    foreach ($lista as $pedido) {
+      $idPedido = $pedido['IdPedido'];
+
+      if (!isset($listaOk[$idPedido])) {
+        $listaOk[$idPedido] = [
+          'IdPedido' => $idPedido,
+          'Mesa' => $pedido['Mesa'],
+          'EstadoPedido' => $pedido['EstadoPedido'],
+          'Productos' => ''
+        ];
+      }
+
+      $listaOk[$idPedido]['Productos'] .= $pedido['Producto'] . ' (' . $pedido['Cantidad'] . '). ';
+    }
+
+    $payload = json_encode(array("PendientesCervecero" => array_values($listaOk)));
 
     $response->getBody()->write($payload);
     return $response
       ->withHeader('Content-Type', 'application/json');
   }
+  
 
   public function TraerUno($request, $response, $args)
   {

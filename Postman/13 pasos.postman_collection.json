@@ -1,0 +1,956 @@
+{
+	"info": {
+		"_postman_id": "3be0b785-4acc-4326-8a44-117ed8302e4d",
+		"name": "13 pasos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34798729"
+	},
+	"item": [
+		{
+			"name": "Logueo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "clave",
+							"value": "1234",
+							"type": "text"
+						},
+						{
+							"key": "usuario",
+							"value": "MiguelAngel",
+							"description": "Socio",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "usuario",
+							"value": "HernanHernandez",
+							"description": "Mozo",
+							"type": "text"
+						},
+						{
+							"key": "usuario",
+							"value": "TadeoJerez",
+							"description": "Cervecero",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "usuario",
+							"value": "MarianoMerello",
+							"description": "Bartender",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "usuario",
+							"value": "PedroSanchez",
+							"description": "Cocinero",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:666/log/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"log",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AltaPedido",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "idmesa",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "nombrecliente",
+							"value": "Eduardo",
+							"type": "text"
+						},
+						{
+							"key": "productos",
+							"value": "[{\"idproducto\":1,\"cantidad\":1},{\"idproducto\":2,\"cantidad\":2},{\"idproducto\":3,\"cantidad\":1},{\"idproducto\":4,\"cantidad\":1}\n\n]\n",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:666/pedidos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"pedidos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ListarPedidosMozo(Solic)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{MozoA}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/pedidoaccion/pedidosmozo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"pedidoaccion",
+						"pedidosmozo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TomarPedidoMozoYEntregarCodigo",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{MozoA}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/pedidoaccion/tomarpedidomozo/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"pedidoaccion",
+						"tomarpedidomozo",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AltaImagenMesaEnPedidoMozo",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{MozoA}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "imagenmesa",
+							"type": "file",
+							"src": "postman-cloud:///1ef4e150-677f-47e0-aa62-88010c45074f"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:666/pedidoaccion/cargarimagenmesa/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"pedidoaccion",
+						"cargarimagenmesa",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ListarPedidosCocinerPend",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{CocineroA}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/pedidoaccion/pedidoscocineros",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"pedidoaccion",
+						"pedidoscocineros"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TomarPedidoCocinero",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{CocineroA}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/pedidoaccion/tomarpedidococinero/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"pedidoaccion",
+						"tomarpedidococinero",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ListarPedidosBartPend",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{BartenderA}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/pedidoaccion/pedidosbartender",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"pedidoaccion",
+						"pedidosbartender"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TomarPedidoBartender",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{BartenderA}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/pedidoaccion/tomarpedidoBartender/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"pedidoaccion",
+						"tomarpedidoBartender",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ListarPedidosCervPend",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{CerveceroB}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/pedidoaccion/pedidoscerveceros",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"pedidoaccion",
+						"pedidoscerveceros"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TomarPedidoCervecero",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{CerveceroB}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/pedidoaccion/tomarpedidoCervecero/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"pedidoaccion",
+						"tomarpedidoCervecero",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TraerPedidoClienteDemora",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "idmesa",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "codigopedido",
+							"value": "KtF74",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:666/pedidoaccion/traerpedidocliente",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"pedidoaccion",
+						"traerpedidocliente"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ListarPedidosSocio",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{SocioA}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/pedidoaccion/traerpedidossocio",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"pedidoaccion",
+						"traerpedidossocio"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EntregarPedidoBartender",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{BartenderA}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/pedidoaccion/entregarpedidoBartender/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"pedidoaccion",
+						"entregarpedidoBartender",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EntregarPedidoCervecero",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{CerveceroB}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/pedidoaccion/entregarpedidoCervecero/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"pedidoaccion",
+						"entregarpedidoCervecero",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EntregarPedidoCocinero",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{CocineroA}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/pedidoaccion/entregarpedidococinero/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"pedidoaccion",
+						"entregarpedidococinero",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ListarPedidosMozo(Listos)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{MozoA}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/pedidoaccion/pedidoslistos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"pedidoaccion",
+						"pedidoslistos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EntregarPedidoACliente",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{MozoA}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/pedidoaccion/entregaracliente/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"pedidoaccion",
+						"entregaracliente",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ListarMesasParaSocio",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{SocioA}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/mesas/estadosmesa",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"mesas",
+						"estadosmesa"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MozaCobraCliente",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{MozoA}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/mesas/cobrarcliente/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"mesas",
+						"cobrarcliente",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SocioCierraMesa",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{SocioA}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/mesas/cerrarmesa/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"mesas",
+						"cerrarmesa",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RealizarEncuesta",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "codigomesa",
+							"value": "KLMNÑ",
+							"type": "text"
+						},
+						{
+							"key": "codigopedido",
+							"value": "KtF74",
+							"type": "text"
+						},
+						{
+							"key": "puntajerestaurante",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "puntajeMesa",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "puntajeMozo",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "puntajeCocinero",
+							"value": "5",
+							"type": "text"
+						},
+						{
+							"key": "comentarios",
+							"value": "Aceptable",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:666/pedidoaccion/realizarencuesta",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"pedidoaccion",
+						"realizarencuesta"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MejoresComentarios",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{SocioA}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/pedidoaccion/mejorescomentarios",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"pedidoaccion",
+						"mejorescomentarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MesaMasUsada",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{SocioA}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/mesas/mesamasusada",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"mesas",
+						"mesamasusada"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ListarPedidosDemoSocio",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{SocioA}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/pedidoaccion/traerpedidosdemoradossocio",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"pedidoaccion",
+						"traerpedidosdemoradossocio"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ListarProductosDemoSocio",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{SocioA}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/pedidoaccion/traerproductosdemoradossocio",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"pedidoaccion",
+						"traerproductosdemoradossocio"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DescargarCSV",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/productos/descargarCSV",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"productos",
+						"descargarCSV"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CargarCSV",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/productos/cargarCSV",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"productos",
+						"cargarCSV"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GenerarPDF",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/pedidos/generarPDF",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"pedidos",
+						"generarPDF"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

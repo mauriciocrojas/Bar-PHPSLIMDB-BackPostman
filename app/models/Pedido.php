@@ -74,14 +74,14 @@ class Pedido
     public static function obtenerTodosSolicitados()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido IdPedido, pe.idmesa Mesa, pe.nombrecliente Cliente, pe.estado EstadoPedido, 
-        pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto , pp.cantidad Cantidad, pe.codigopedido CodigoPedido FROM pedido pe 
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido IdPedido, pe.idmesa Mesa, pe.nombrecliente Cliente, pe.estado EstadoPedido,
+        pr.descripcion Producto , pp.cantidad Cantidad FROM pedido pe 
         inner join pedidoproducto pp on pe.idpedido = pp.idpedido
         inner join producto pr on pp.idproducto = pr.idproducto
         WHERE pe.estado = 'Solicitado'");
         $consulta->execute();
 
-        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
+        return $consulta->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public static function obtenerTodosListosParaServir()
@@ -94,46 +94,46 @@ class Pedido
         WHERE pe.estado = 'Listo para servir'");
         $consulta->execute();
 
-        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
+        return $consulta->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function obtenerTodosTomadosPorMozoYEnPreparacionComida()
+    public static function obtenerPendientesCocinero()
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido IdPedido, pe.idmesa Mesa, pe.estado EstadoPedido,
+        pr.descripcion Producto, pp.cantidad Cantidad FROM pedido pe 
+        inner join pedidoproducto pp on pe.idpedido = pp.idpedido
+        inner join producto pr on pp.idproducto = pr.idproducto
+        WHERE pp.estadoproducto in ('Tomado por mozo') AND pr.tipo = 'Comida'");
+        $consulta->execute();
+
+        return $consulta->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function ObtenerPendientesBartender()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido IdPedido, pe.idmesa Mesa, pe.estado EstadoPedido, 
         pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto, pp.cantidad Cantidad, pp.estadoproducto EstadoProducto, pe.codigopedido CodigoPedido FROM pedido pe 
         inner join pedidoproducto pp on pe.idpedido = pp.idpedido
         inner join producto pr on pp.idproducto = pr.idproducto
-        WHERE pe.estado in ('Tomado por mozo','En preparacion') AND pr.tipo = 'Comida'");
+        WHERE pp.estadoproducto in ('Tomado por mozo') AND pr.tipo = 'Trago'");
         $consulta->execute();
 
-        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
+        return $consulta->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function obtenerTodosTomadosPorMozoYEnPreparacionBartender()
+    public static function ObtenerPendientesCervecero()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido IdPedido, pe.idmesa Mesa, pe.estado EstadoPedido, 
         pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto, pp.cantidad Cantidad, pp.estadoproducto EstadoProducto, pe.codigopedido CodigoPedido FROM pedido pe 
         inner join pedidoproducto pp on pe.idpedido = pp.idpedido
         inner join producto pr on pp.idproducto = pr.idproducto
-        WHERE pe.estado in ('Tomado por mozo','En preparacion') AND pr.tipo = 'Trago'");
+        WHERE pp.estadoproducto in ('Tomado por mozo') AND pr.tipo = 'Cerveza'");
         $consulta->execute();
 
-        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
-    }
-
-    public static function obtenerTodosTomadosPorMozoYEnPreparacionCervecero()
-    {
-        $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.idpedido IdPedido, pe.idmesa Mesa, pe.estado EstadoPedido, 
-        pe.tiempoestimado TiempoDePreparacion, pr.descripcion Producto, pp.cantidad Cantidad, pp.estadoproducto EstadoProducto, pe.codigopedido CodigoPedido FROM pedido pe 
-        inner join pedidoproducto pp on pe.idpedido = pp.idpedido
-        inner join producto pr on pp.idproducto = pr.idproducto
-        WHERE pe.estado in ('Tomado por mozo','En preparacion') AND pr.tipo = 'Cerveza'");
-        $consulta->execute();
-
-        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
+        return $consulta->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public static function obtenerPedido($id)
