@@ -1,9 +1,3 @@
-## Acceder a phpMyAdmin, gestión la base de datos remota
-
-Desde las opciones de la base creada, accedemos a **phpMyAdmin**
-
-![mysql4](https://i.ibb.co/jvrdKFm/Screenshot-at-Mar-29-19-51-39.png)
-
 Iniciamos sesion con los datos de la base
 
 ![mysql5](https://i.ibb.co/gF2nN9g/Screenshot-at-Mar-29-19-52-39.png)
